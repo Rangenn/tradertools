@@ -26,10 +26,10 @@ private static final Session session;
         try {
             sessionFactory = new AnnotationConfiguration()
                     //.addPackage("entity")
-                    .addAnnotatedClass(entity.Price.class)
+                    .addAnnotatedClass(entity.Supply.class)
                     .addAnnotatedClass(entity.Product.class)
                     .addAnnotatedClass(entity.Category.class)
-                    //.addAnnotatedClass(entity.ProductAlias.class)
+                    .addAnnotatedClass(entity.Customer.class)
                     .configure().buildSessionFactory();
             session = sessionFactory.openSession();
         } catch (Exception ex) {

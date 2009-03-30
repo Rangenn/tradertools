@@ -41,21 +41,21 @@ public class JPanelInvoice extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "№", "Наименование", "Цена", "Кол-во", "Сумма"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jLabelSum.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabelSum.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabelSum.setText("Итого:");
 
-        jLabelSumValue.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabelSumValue.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabelSumValue.setText("100235р");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

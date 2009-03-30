@@ -38,7 +38,7 @@ public class FormTransmitter extends javax.swing.JFrame {
         try {
             this.setIconImage(ImageIO.read(new File("src/view/icons/hammer_screwdriver.png")));
         } catch (IOException ex) {
-            Logger.getLogger(FormPriceList.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormSupplyList.class.getName()).log(Level.SEVERE, null, ex);
         }
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
         "Excel", "xls");

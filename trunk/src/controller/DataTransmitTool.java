@@ -5,7 +5,10 @@
 
 package controller;
 
-import dao.PriceDao;
+
+import dao.DaoFactory;
+import dao.SupplyDao;
+import entity.Supply;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -67,8 +70,8 @@ public class DataTransmitTool {
 
     public void ImportPrices(String filename){
         String[][] data = null;
-        PriceDao PriceDao = new PriceDao();
-
+        //SupplyDao supplyDao = new SupplyDao();
+        Exception e = null;
         try {
             data = new excel.Transmitter().Import(filename);
         } catch (IOException ex) {
@@ -78,22 +81,31 @@ public class DataTransmitTool {
         }
 
         int ctr = 0;
+        String category = null;
         for (int i = 0; i < data.length; i++) {
 //            Query =
 //                "INSERT INTO product (title, article) " +
 //                "VALUES ('" + data[i][0] + "','" + data[i][1] + "')";
 //            HibUtil.getSession().createSQLQuery(Query).executeUpdate();
             try {
-                PriceDao.create(data[i][0], data[i][0], null, data[i][2], null);
+                if (data[i].length < 4)
+                    category = null;
+                else category = data[i][3];
+                DaoFactory.getSupplyDao().create("Тихонов", data[i][0], data[i][1], category, 0,  data[i][2]);
             }
             catch (Exception ex){//test
                 ctr++;
+                e = ex;
                 //Logger.getLogger(DataTransmitTool.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         System.out.println("ImportPrices result:\n");
         System.out.println("Imported: " + String.valueOf(data.length - ctr) + '\n');
         System.out.println("Skipped with error: " + String.valueOf(ctr) + '\n');
+        if (e != null) {
+            System.out.println("Last error: ");
+            e.printStackTrace();
+        }
     }
 
     public void ExportPrices(String filename){

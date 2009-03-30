@@ -4,37 +4,41 @@
  */
 
 /*
- * JPanelPriceList.java
+ * JPanelSupplyList.java
  *
  * Created on 26.02.2009, 17:50:46
  */
 
 package view;
 
-import entity.Price;
+import entity.Supply;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.util.List;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JScrollBar;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import view.componentmodels.TMPrice;
+import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
+import view.componentmodels.TMSupply;
 
 /**
  *
  * @author е
  */
-public class JPanelPriceList extends javax.swing.JPanel {
+public class JPanelSupplyList extends javax.swing.JPanel {
 
-    private List<Price> ListPrices;
+    private List<Supply> ListPrices;
 
-    /** Creates new form JPanelPriceList */
-    public JPanelPriceList() {
+    /** Creates new form JPanelSupplyList */
+    public JPanelSupplyList() {
         initComponents();
         getTable().setColumnSelectionAllowed(false);
     }
 
-    public JPanelPriceList(List<Price> list) {
+    public JPanelSupplyList(List<Supply> list) {
         this();
-        setListPrices(list);
+        setItemList(list);
     }
 
     /** This method is called from within the constructor to
@@ -48,22 +52,22 @@ public class JPanelPriceList extends javax.swing.JPanel {
 
         jScrollPanePriceList = new javax.swing.JScrollPane();
         jTablePriceList = new javax.swing.JTable();
-        jPanelSearch = new view.JPanelSearch();
+        jPanelSearch1 = new view.JPanelSearch();
 
-        jTablePriceList.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jTablePriceList.setFont(new java.awt.Font("Arial", 0, 12));
         jTablePriceList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3"
+                "№", "Наименование", "Артикул", "Цена", "Остаток"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -74,28 +78,29 @@ public class JPanelPriceList extends javax.swing.JPanel {
         jTablePriceList.setColumnSelectionAllowed(true);
         jTablePriceList.getTableHeader().setReorderingAllowed(false);
         jScrollPanePriceList.setViewportView(jTablePriceList);
+        jTablePriceList.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPanePriceList, javax.swing.GroupLayout.DEFAULT_SIZE, 736, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanelSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(334, Short.MAX_VALUE))
+                .addComponent(jPanelSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addComponent(jScrollPanePriceList, javax.swing.GroupLayout.DEFAULT_SIZE, 736, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPanePriceList, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
+                .addComponent(jScrollPanePriceList, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanelSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private view.JPanelSearch jPanelSearch;
+    private view.JPanelSearch jPanelSearch1;
     private javax.swing.JScrollPane jScrollPanePriceList;
     private javax.swing.JTable jTablePriceList;
     // End of variables declaration//GEN-END:variables
@@ -104,7 +109,7 @@ public class JPanelPriceList extends javax.swing.JPanel {
      * @return the jPanelSearch
      */
     public view.JPanelSearch getJPanelSearch() {
-        return jPanelSearch;
+        return jPanelSearch1;
     }
 
     /**
@@ -125,7 +130,7 @@ public class JPanelPriceList extends javax.swing.JPanel {
         int tmp = 0;
         try {
             if (isVisible)
-                tmp = ((TMPrice)getTable().getModel()).getColumnPreferredWidth(index);
+                tmp = ((TMSupply)getTable().getModel()).getColumnPreferredWidth(index);
         }
         catch (ClassCastException ex) {
             System.out.println(ex.getMessage());
@@ -136,19 +141,39 @@ public class JPanelPriceList extends javax.swing.JPanel {
         /**
      * @return the ListPrices
      */
-    public List<Price> getListPrices() {
+    public List<Supply> getItemList() {
         return ListPrices;
     }
 
-    public void setListPrices(List<Price> list) {
+    public void setItemList(List<Supply> list) {
         ListPrices = list;
-        getTable().setModel(new TMPrice(ListPrices));
+        getTable().setModel(new TMSupply(ListPrices));
         for(int i = 0; i < getTable().getColumnCount(); i++)
             getTable().getColumnModel().getColumn(i).setMinWidth(0);
-        setSelectedPrice(0);
+        setSelectedIndex(0);
+
+        //setCellAppearance();
+        }
+
+    /**
+     * Устанавливает способ представления значений ячеек таблицы (визуальное отображение)
+     */
+    protected void setCellAppearance() {
+        Component c;
+        Color color;
+        for(int i = 0; i < getTable().getRowCount(); i++) {
+            if (ListPrices.get(i).getAmountLeft() <= ListPrices.get(i).getAmountMin())
+                color = Color.RED;
+            else color = Color.GREEN;
+            
+            //СПРОСИТЬ ВАДИКА!
+            c = getTable().getCellRenderer(i, 5).getTableCellRendererComponent(jTablePriceList, ListPrices.get(i), false, false, i, 5);
+            c.setForeground(color);
+            //.setCellRenderer(getTable().getCellRenderer(i, 5));
+        }
     }
 
-    public Price getSelectedPrice(){
+    public Supply getSelectedItem(){
         try {
             return ListPrices.get(getTable().getSelectedRow());
         }
@@ -160,15 +185,15 @@ public class JPanelPriceList extends javax.swing.JPanel {
         }
     }
 
-    public int getSelectedPriceIndex(){
+    public void setSelectedItem(Supply p){
+        setSelectedIndex(ListPrices.indexOf(p));
+    }
+
+    public int getSelectedIndex(){
         return getTable().getSelectedRow();
     }
 
-    public void setSelectedPrice(Price p){
-        setSelectedPrice(ListPrices.indexOf(p));
-    }
-
-    public void setSelectedPrice(int index){
+    public void setSelectedIndex(int index){
         if (index < 0 || index >= getTable().getRowCount()) return;
         getTable().setRowSelectionInterval(index, index);
 
@@ -178,3 +203,10 @@ public class JPanelPriceList extends javax.swing.JPanel {
         Scroll.setValue(Scroll.getMaximum() - tmp);        
     }
 }
+
+//class MyTableCellRenderer extends javax.​swing.​table.DefaultTableCellRender implements TableCellRenderer {
+//
+//    public MyTableCellRenderer() {
+//        super();
+//    }
+//}

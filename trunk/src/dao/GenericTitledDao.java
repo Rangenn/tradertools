@@ -27,7 +27,9 @@ public class GenericTitledDao<T, PK extends Serializable> extends GenericDaoHib{
     public List<T> getList(String titleLike){
         Transaction t = HibUtil.getSession().beginTransaction();
         List<T> res =  HibUtil.getSession().createCriteria(type)
-                .add(Restrictions.like("title", titleLike)).list();
+                .add(Restrictions.like("title", titleLike))
+                .addOrder(Order.asc("title"))
+                .list();
         t.commit();
         return res;
     }

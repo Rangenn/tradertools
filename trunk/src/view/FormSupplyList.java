@@ -4,7 +4,7 @@
  */
 
 /*
- * FormPriceList.java
+ * FormSupplyList.java
  *
  * Created on 17.02.2009, 23:33:00
  */
@@ -12,7 +12,7 @@
 package view;
 
 import java.awt.event.ActionEvent;
-import entity.Price;
+import entity.Supply;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -26,22 +26,21 @@ import javax.imageio.ImageIO;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
 import util.PropsUtil;
-import view.JPanelPriceList;
 
 /**
  *
  * @author е
  */
-public class FormPriceList extends javax.swing.JFrame {
+public class FormSupplyList extends javax.swing.JFrame {
 
-    /** Creates new form FormPriceList */
-    public FormPriceList(List<Price> list) {
+    /** Creates new form FormSupplyList */
+    public FormSupplyList(List<Supply> list) {
         initComponents();
-        jPanelPriceList.setListPrices(list);
+        jPanelSupplyList1.setItemList(list);
         try {
             this.setIconImage(ImageIO.read(new File("src/view/icons/hammer_screwdriver.png")));
         } catch (IOException ex) {
-            Logger.getLogger(FormPriceList.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormSupplyList.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         JCheckBoxMenuItem m = null;
@@ -51,8 +50,8 @@ public class FormPriceList extends javax.swing.JFrame {
                 setVisiblePriceColumns();
             }
         };
-        for(int i = 0; i < jPanelPriceList.getTable().getColumnCount(); i++){
-            m = new JCheckBoxMenuItem(jPanelPriceList.getTable().getColumnName(i), true);
+        for(int i = 0; i < jPanelSupplyList1.getTable().getColumnCount(); i++){
+            m = new JCheckBoxMenuItem(jPanelSupplyList1.getTable().getColumnName(i), true);
             m.addActionListener(l);
             jMenuView.add(m);
         }
@@ -70,7 +69,7 @@ public class FormPriceList extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanelPriceList = new view.JPanelPriceList();
+        jPanelSupplyList1 = new view.JPanelSupplyList();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemSaveAs = new javax.swing.JMenuItem();
@@ -143,11 +142,11 @@ public class FormPriceList extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelPriceList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanelSupplyList1, javax.swing.GroupLayout.DEFAULT_SIZE, 774, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelPriceList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanelSupplyList1, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
         );
 
         pack();
@@ -176,7 +175,7 @@ public class FormPriceList extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemQuit;
     private javax.swing.JMenuItem jMenuItemSaveAs;
     private javax.swing.JMenu jMenuView;
-    private view.JPanelPriceList jPanelPriceList;
+    private view.JPanelSupplyList jPanelSupplyList1;
     // End of variables declaration//GEN-END:variables
 
 
@@ -217,40 +216,40 @@ public class FormPriceList extends javax.swing.JFrame {
     }
 
     /**
-     * @return the jPanelPriceList.getJPanelSearch()
+     * @return the jPanelSupplyList1.getJPanelSearch()
      */
     public view.JPanelSearch getJPanelSearch() {
-        return jPanelPriceList.getJPanelSearch();
+        return jPanelSupplyList1.getJPanelSearch();
     }
 
-    public view.JPanelPriceList getJPanelPriceList() {
-        return jPanelPriceList;
+    public view.JPanelSupplyList getJPanelPriceList() {
+        return jPanelSupplyList1;
     }
 
-    public Price getSelectedPrice(){
-        return jPanelPriceList.getSelectedPrice();
+    public Supply getSelectedPrice(){
+        return jPanelSupplyList1.getSelectedItem();
     }
 
     public int getSelectedPriceIndex(){
-        return jPanelPriceList.getSelectedPriceIndex();
+        return jPanelSupplyList1.getSelectedIndex();
     }
 
-    public void setSelectedPrice(Price p){
-        jPanelPriceList.setSelectedPrice(p);
+    public void setSelectedPrice(Supply p){
+        jPanelSupplyList1.setSelectedItem(p);
     }
 
     public void setSelectedPrice(int index){
-        jPanelPriceList.setSelectedPrice(index);
+        jPanelSupplyList1.setSelectedIndex(index);
     }
 
     public void setVisiblePriceColumns(){
-        for(int i = 0; i < jPanelPriceList.getTable().getColumnCount(); i++){
-            jPanelPriceList.setColumnVisible(i,((JCheckBoxMenuItem)jMenuView.getItem(i)).getState());
+        for(int i = 0; i < jPanelSupplyList1.getTable().getColumnCount(); i++){
+            jPanelSupplyList1.setColumnVisible(i,((JCheckBoxMenuItem)jMenuView.getItem(i)).getState());
         }
     }
 
     private void loadTextProps() {
-        setTitle(PropsUtil.getProperty("FormPriceList.title"));
+        setTitle(PropsUtil.getProperty("FormSupplyList.title"));
         jMenuFile.setText(PropsUtil.getProperty("jMenuFile.text"));
         jMenuItemSaveAs.setText(PropsUtil.getProperty("jMenuItemSaveAs.text"));
         jMenuItemQuit.setText(PropsUtil.getProperty("jMenuItemQuit.text"));
