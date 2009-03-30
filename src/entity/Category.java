@@ -42,7 +42,7 @@ public class Category implements Serializable {
     @Basic(optional = false)
     @Column(name = "title")
     private String title;
-    @OneToMany(mappedBy = "categoryId", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private Collection<Product> productCollection;
 
     public Category() {

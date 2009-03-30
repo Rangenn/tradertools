@@ -15,7 +15,7 @@ import util.PropsUtil;
  */
 public class ProductDao extends GenericTitledDao<Product, Integer> {
 
-    public ProductDao(){
+    ProductDao(){
         super(Product.class);
     }
 
@@ -26,13 +26,13 @@ public class ProductDao extends GenericTitledDao<Product, Integer> {
         Product pr = new Product();
         pr.setTitle(title);
         pr.setArticle(article);
-        pr.setCategoryId(category);
+        pr.setCategory(category);
         create(pr);
         return pr;
     }
     
     public Product create(String title, String article, String category) throws DaoException{
-        Category c = new CategoryDao().create(category);
+        Category c = DaoFactory.getCategoryDao().create(category);
         return create(title, article, c);
     }
 }

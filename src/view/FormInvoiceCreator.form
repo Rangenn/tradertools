@@ -35,14 +35,14 @@
                           <Component id="jButton3" pref="49" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <Component id="jComboBox1" alignment="0" min="-2" pref="177" max="-2" attributes="1"/>
+                  <Component id="jComboBoxCustomer" alignment="0" min="-2" pref="177" max="-2" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Component id="jPanelCustomerInfo1" max="32767" attributes="1"/>
-                  <Component id="jPanelInvoice1" alignment="1" max="32767" attributes="1"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jPanelInvoice1" max="32767" attributes="1"/>
+                  <Component id="jPanelCustomerShortInfo1" alignment="0" min="-2" max="-2" attributes="1"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -51,31 +51,26 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jComboBox1" min="-2" pref="50" max="-2" attributes="0"/>
-                  <Component id="jPanelCustomerInfo1" alignment="0" min="-2" pref="92" max="-2" attributes="0"/>
+                  <Component id="jComboBoxCustomer" min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="jPanelCustomerShortInfo1" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace pref="21" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
-                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="36" max="32767" attributes="0"/>
-                              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jButton3" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                              <Component id="jButton4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="jPanelInvoice1" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
+                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="51" max="32767" attributes="0"/>
+                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                      <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                      <Component id="jPanelPriceList1" pref="341" max="32767" attributes="1"/>
+                  <Component id="jPanelPriceList1" pref="341" max="32767" attributes="1"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jPanelInvoice1" pref="330" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -83,7 +78,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="view.JPanelPriceList" name="jPanelPriceList1">
+    <Component class="view.JPanelSupplyList" name="jPanelPriceList1">
     </Component>
     <Component class="view.JPanelInvoice" name="jPanelInvoice1">
     </Component>
@@ -107,14 +102,12 @@
         <Property name="text" type="java.lang.String" value="jButton1"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBox1">
+    <Component class="javax.swing.JComboBox" name="jComboBoxCustomer">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
+          <StringArray count="2">
+            <StringItem index="0" value="&#x418;&#x41f; &#x418;&#x432;&#x430;&#x43d;&#x43e;&#x432;"/>
+            <StringItem index="1" value="&#x417;&#x410;&#x41e; &quot;&#x417;&#x430;&#x440;&#x43d;&#x438;&#x446;&#x430;&quot;"/>
           </StringArray>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -124,7 +117,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="view.JPanelCustomerInfo" name="jPanelCustomerInfo1">
+    <Component class="view.JPanelCustomerShortInfo" name="jPanelCustomerShortInfo1">
     </Component>
   </SubComponents>
 </Form>

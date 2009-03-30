@@ -22,6 +22,7 @@ import javax.persistence.Table;
  *
  * @author е
  */
+
 @Entity
 @Table(name = "supply")
 @NamedQueries({@NamedQuery(name = "Supply.findAll", query = "SELECT s FROM Supply s")})
@@ -33,7 +34,7 @@ public class Supply implements Serializable {
     private String titleAlias;
     @Basic(optional = false)
     @Column(name = "amount_min")
-    private int amountMin;
+    private Integer amountMin;
     @Column(name = "prev_price")
     private BigDecimal prevPrice;
     @Basic(optional = false)
@@ -81,11 +82,11 @@ public class Supply implements Serializable {
         this.titleAlias = titleAlias;
     }
 
-    public int getAmountMin() {
+    public Integer getAmountMin() {
         return amountMin;
     }
 
-    public void setAmountMin(int amountMin) {
+    public void setAmountMin(Integer amountMin) {
         this.amountMin = amountMin;
     }
 

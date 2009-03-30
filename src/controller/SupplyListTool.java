@@ -5,12 +5,8 @@
 
 package controller;
 
-import dao.CategoryDao;
-import dao.DaoException;
-import dao.PriceDao;
-import dao.ProductDao;
+import dao.DaoFactory;
 import entity.*;
-import java.awt.FocusTraversalPolicy;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -25,7 +21,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import org.hibernate.exception.JDBCConnectionException;
-import util.HibUtil;
 import util.PropsUtil;
 import view.*;
 import view.componentmodels.CMCategory;
@@ -33,16 +28,16 @@ import view.componentmodels.CMCategory;
  *
  * @author е
  */
-public class PriceListTool {
+public class SupplyListTool {
 
-    FormPriceList FPriceList;
+    FormSupplyList FSupplyList;
     FormProductsList FProductsList;
-    List<Price> ListPrices;
-    PriceDao PriceDao;
-    ProductDao ProductDao;
-    CategoryDao CategoryDao;
+    List<Supply> ListSupplies;
+    //SupplyDao SupplyDao;
+    //ProductDao ProductDao;
+    //CategoryDao CategoryDao;
 
-    public PriceListTool(){
+    public SupplyListTool(){
         try{
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         }
@@ -50,66 +45,66 @@ public class PriceListTool {
             System.out.println(ex.toString());
         }        
 
-        PriceDao = new PriceDao();
-        ProductDao = new ProductDao();
-        CategoryDao = new CategoryDao();
-        ListPrices = PriceDao.getList();
+        //SupplyDao = new SupplyDao();
+        //ProductDao = new ProductDao();
+        //CategoryDao = new CategoryDao();
+        ListSupplies = DaoFactory.getSupplyDao().getList();
 
-        FPriceList = new FormPriceList(ListPrices);
+        FSupplyList = new FormSupplyList(ListSupplies);
 
         ActionListener l = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 StartAddPrice();
             }
         };
-        FPriceList.addjMenuItemAddActionListener(l);
+        FSupplyList.addjMenuItemAddActionListener(l);
 
         l = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 StartEditPrice();
             }
         };
-        FPriceList.addjMenuItemEditActionListener(l);
+        FSupplyList.addjMenuItemEditActionListener(l);
 
         l = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 StartDeletePrice();
             }
         };
-        FPriceList.addjMenuItemDeleteActionListener(l);
+        FSupplyList.addjMenuItemDeleteActionListener(l);
 
         DocumentListener dl = new DocumentListenerSearch();
-        FPriceList.getJPanelSearch().addjTextFieldSearchTemplateDocumentListener(dl);
+        FSupplyList.getJPanelSearch().addjTextFieldSearchTemplateDocumentListener(dl);
 
         l = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int index = 0;
                 try {
-                    index = FPriceList.getSelectedPriceIndex() + 1;
-                    if (index == ListPrices.size()) index = 0;
+                    index = FSupplyList.getSelectedPriceIndex() + 1;
+                    if (index == ListSupplies.size()) index = 0;
                 } catch (ArrayIndexOutOfBoundsException ex) {
-                    Logger.getLogger(PriceListTool.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
+                    Logger.getLogger(SupplyListTool.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
                 }
-                SearchNext(FPriceList.getJPanelSearch().getSearchTemplate(), index);
+                SearchNext(FSupplyList.getJPanelSearch().getSearchTemplate(), index);
             }
         };
-        FPriceList.getJPanelSearch().addjButtonNextActionListener(l);
+        FSupplyList.getJPanelSearch().addjButtonNextActionListener(l);
 
         l = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int index = ListPrices.size() - 1;
+                int index = ListSupplies.size() - 1;
                 try {
-                    index = FPriceList.getSelectedPriceIndex() - 1;
-                    if (index == -1) index = ListPrices.size() - 1;
+                    index = FSupplyList.getSelectedPriceIndex() - 1;
+                    if (index == -1) index = ListSupplies.size() - 1;
                 } catch (ArrayIndexOutOfBoundsException ex) {
-                    Logger.getLogger(PriceListTool.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
+                    Logger.getLogger(SupplyListTool.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
                 }
-                SearchPrev(FPriceList.getJPanelSearch().getSearchTemplate(), index);
+                SearchPrev(FSupplyList.getJPanelSearch().getSearchTemplate(), index);
             }
         };
-        FPriceList.getJPanelSearch().addjButtonPrevActionListener(l);
+        FSupplyList.getJPanelSearch().addjButtonPrevActionListener(l);
 
-        FPriceList.setVisible(true);
+        FSupplyList.setVisible(true);
     }
 
     public void Search(DocumentEvent e)
@@ -117,66 +112,67 @@ public class PriceListTool {
         try {
             SearchNext(e.getDocument().getText(0, e.getDocument().getLength()), 0);
         } catch (BadLocationException ex) {
-            Logger.getLogger(PriceListTool.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SupplyListTool.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     //SearchNext и SearchPrev требуют рефакторинга!
     public void SearchNext(String template, int pos)
     {
         if (template == null || template.equals("")) return;
-        if (pos < 0 || pos >= ListPrices.size()) return;
-        for(int i = pos; i < ListPrices.size(); i++){
-            if (ListPrices.get(i).getProductId().getTitle().toLowerCase().startsWith(template.toLowerCase())){
-                FPriceList.setSelectedPrice(i);
-                FPriceList.getJPanelSearch().setHavingResult(true);
+        if (pos < 0 || pos >= ListSupplies.size()) return;
+        for(int i = pos; i < ListSupplies.size(); i++){
+            if (ListSupplies.get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
+                FSupplyList.setSelectedPrice(i);
+                FSupplyList.getJPanelSearch().setHavingResult(true);
                 return;
             }
         }
         for(int i = 0; i < pos; i++)
-            if (ListPrices.get(i).getProductId().getTitle().toLowerCase().startsWith(template.toLowerCase())){
-                FPriceList.setSelectedPrice(i);
-                FPriceList.getJPanelSearch().setHavingResult(true);
+            if (ListSupplies.get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
+                FSupplyList.setSelectedPrice(i);
+                FSupplyList.getJPanelSearch().setHavingResult(true);
                 return;
             }
         
-        FPriceList.getJPanelSearch().setHavingResult(false);
+        FSupplyList.getJPanelSearch().setHavingResult(false);
     }
 
     public void SearchPrev(String template, int pos)
     {
         if (template == null || template.equals("")) return;
-        if (pos < 0 || pos >= ListPrices.size()) return;
+        if (pos < 0 || pos >= ListSupplies.size()) return;
         for(int i = pos; i >= 0; i--){
-            if (ListPrices.get(i).getProductId().getTitle().toLowerCase().startsWith(template.toLowerCase())){
-                FPriceList.setSelectedPrice(i);
-                FPriceList.getJPanelSearch().setHavingResult(true);
+            if (ListSupplies.get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
+                FSupplyList.setSelectedPrice(i);
+                FSupplyList.getJPanelSearch().setHavingResult(true);
                 return;
             }
         }
-        for(int i = ListPrices.size() - 1; i > pos; i--)
-            if (ListPrices.get(i).getProductId().getTitle().toLowerCase().startsWith(template.toLowerCase())){
-                FPriceList.setSelectedPrice(i);
-                FPriceList.getJPanelSearch().setHavingResult(true);
+        for(int i = ListSupplies.size() - 1; i > pos; i--)
+            if (ListSupplies.get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
+                FSupplyList.setSelectedPrice(i);
+                FSupplyList.getJPanelSearch().setHavingResult(true);
                 return;
             }
-        FPriceList.getJPanelSearch().setHavingResult(false);
+        FSupplyList.getJPanelSearch().setHavingResult(false);
     }
 
     // <editor-fold defaultstate="collapsed" desc="PriceFGIE">
     private String      title, article;
-    private BigDecimal  buyingprice, sellingprice;
+    private BigDecimal  actualprice;
+    private int         amountleft;
     private Category    category;
 
     //инициализация формы редактирования
     private FormGenericItemEditor configurePriceFGIE(String title) {
         FormGenericItemEditor FGIE = new FormGenericItemEditor(4, 1);
         List<JTextField> list = FGIE.getTextFields();
-        list.get(0).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Price.Title")));
-        list.get(1).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Price.Article")));
-        list.get(2).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Price.BuyingPrice")));
-        list.get(3).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Price.SellingPrice")));
-        FGIE.getComboBoxes().get(0).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Price.Category")));
-        FGIE.getComboBoxes().get(0).setModel(new CMCategory((CategoryDao.getList())));
+        list.get(0).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Supply.Title")));
+        list.get(1).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Supply.Article")));
+        list.get(2).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Supply.ActualPrice")));
+        list.get(3).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Supply.AmountLeft")));
+        FGIE.getComboBoxes().get(0).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Supply.Category")));
+        FGIE.getComboBoxes().get(0).setModel(new CMCategory((DaoFactory.getCategoryDao().getList())));
         //FGIE.addjButtonOkActionListener(OkActionListener);
         FGIE.setTitle(title);
         FGIE.setVisible(true);
@@ -187,15 +183,14 @@ public class PriceListTool {
     private boolean  EndPriceFGIE(FormGenericItemEditor FGIE){
         title = FGIE.getTextFields().get(0).getText();
         article = FGIE.getTextFields().get(1).getText();
-        String bp = FGIE.getTextFields().get(2).getText();
+        amountleft = Integer.valueOf(FGIE.getTextFields().get(2).getText());
         String sp = FGIE.getTextFields().get(3).getText();
         if (title.equals("") || sp.equals("")){
             JOptionPane.showMessageDialog(FGIE, "Не все поля заполнены", FGIE.getTitle(), JOptionPane.ERROR_MESSAGE);
             return false;//выход до вызова dispose, возврат к форме редактирования
         }
         try {
-            buyingprice = (bp == null || bp.equals("")) ? null : new BigDecimal(bp);
-            sellingprice = (sp == null || sp.equals("")) ? null : new BigDecimal(sp);
+            actualprice = (sp == null || sp.equals("")) ? null : new BigDecimal(sp);
         }
         catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(FGIE, "Числовые поля заполнены некорректно", FGIE.getTitle(), JOptionPane.ERROR_MESSAGE);
@@ -220,14 +215,14 @@ public class PriceListTool {
 
 
     private void EndAddPrice(){               
-        try {
-            Price p = PriceDao.create(title, article, buyingprice, sellingprice, category);
-            ListPrices.add(p);
-            FPriceList.getJPanelPriceList().getTable().revalidate();
-        } catch (DaoException ex) {
-            Logger.getLogger(PriceListTool.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(FPriceList, ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-        }        
+//        try {
+            Supply p = DaoFactory.getSupplyDao().create("Тихонов", title, article, category, 1, actualprice);
+            ListSupplies.add(p);
+            FSupplyList.getJPanelPriceList().getTable().revalidate();
+//        } catch (DaoException ex) {
+//            Logger.getLogger(SupplyListTool.class.getName()).log(Level.SEVERE, null, ex);
+//            JOptionPane.showMessageDialog(FSupplyList, ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+//        }
     }
 
     public void StartEditPrice(){
@@ -240,43 +235,44 @@ public class PriceListTool {
             }
         };
         FGIE.addjButtonOkActionListener(l);
-        Price p = FPriceList.getSelectedPrice();
-        FGIE.getTextFields().get(0).setText(p.getProductId().getTitle());
-        FGIE.getTextFields().get(1).setText(p.getProductId().getArticle());
+        Supply p = FSupplyList.getSelectedPrice();
+        FGIE.getTextFields().get(0).setText(p.getProduct().getTitle());
+        FGIE.getTextFields().get(1).setText(p.getProduct().getArticle());
         String s = null;
-        if (p.getBuyingPrice() != null) s = p.getBuyingPrice().toString();
+        if (p.getAmountLeft() != null) s = p.getAmountLeft().toString();
         FGIE.getTextFields().get(2).setText(s);
-        FGIE.getTextFields().get(3).setText(p.getSellingPrice().toString());
-        FGIE.getComboBoxes().get(0).setSelectedItem(p.getProductId().getCategoryId());
+        FGIE.getTextFields().get(3).setText(p.getActualPrice().toString());
+        FGIE.getComboBoxes().get(0).setSelectedItem(p.getProduct().getCategory());
     }
 
     public void EndEditPrice(){
 //        try {
-            PriceDao.update(FPriceList.getSelectedPrice(), title, article, buyingprice, sellingprice, category);
-            FPriceList.getJPanelPriceList().getTable().revalidate();
+            Supply buf = FSupplyList.getSelectedPrice();
+            DaoFactory.getSupplyDao().update(buf, title, article, amountleft, actualprice, category);
+            FSupplyList.getJPanelPriceList().getTable().revalidate();
 //        } catch (DaoException ex) {
-//            Logger.getLogger(PriceListTool.class.getName()).log(Level.SEVERE, null, ex);
-//            JOptionPane.showMessageDialog(FPriceList, ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+//            Logger.getLogger(SupplyListTool.class.getName()).log(Level.SEVERE, null, ex);
+//            JOptionPane.showMessageDialog(FSupplyList, ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
 //        }
     }
 
     public void StartDeletePrice(){
-        DeletePrice(FPriceList.getSelectedPrice());
+        DeletePrice(FSupplyList.getSelectedPrice());
     }
 
-    public void DeletePrice(Price o){
-        if (JOptionPane.showConfirmDialog(FPriceList, "Вы уверены, что хотите удалить " + o.getProductId().getTitle()
+    public void DeletePrice(Supply o){
+        if (JOptionPane.showConfirmDialog(FSupplyList, "Вы уверены, что хотите удалить " + o.getProduct().getTitle()
                 + "?\n", "Удаление", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
-        PriceDao.delete(o);
-        ListPrices.remove(o);
-        FPriceList.getJPanelPriceList().getTable().revalidate();
+        DaoFactory.getSupplyDao().delete(o);
+        ListSupplies.remove(o);
+        FSupplyList.getJPanelPriceList().getTable().revalidate();
     }
 
     // </editor-fold>
 
     public static void main(String[] args) {
         try {
-           new PriceListTool();
+           new SupplyListTool();
         } catch (JDBCConnectionException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }       

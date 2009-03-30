@@ -116,17 +116,17 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanelPriceList" max="32767" attributes="0"/>
+          <Component id="jPanelSupplyList1" alignment="0" pref="774" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanelPriceList" max="32767" attributes="0"/>
+          <Component id="jPanelSupplyList1" alignment="0" pref="280" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="view.JPanelPriceList" name="jPanelPriceList">
+    <Component class="view.JPanelSupplyList" name="jPanelSupplyList1">
     </Component>
   </SubComponents>
 </Form>

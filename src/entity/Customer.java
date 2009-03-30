@@ -12,16 +12,24 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
  *
  * @author е
  */
+@SequenceGenerator(
+    name="SEQ_GEN",
+    sequenceName="customer_id_seq",
+    allocationSize=1
+)
 @Entity
 @Table(name = "customer")
 @NamedQueries({@NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c")})
@@ -30,10 +38,11 @@ public class Customer implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "id")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_GEN")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
+    @Column(name = "title")
+    private String title;
     @Column(name = "details")
     private String details;
     @Column(name = "address")
@@ -57,7 +66,7 @@ public class Customer implements Serializable {
 
     public Customer(Integer id, String name, boolean isSupplier) {
         this.id = id;
-        this.name = name;
+        this.title = name;
         this.isSupplier = isSupplier;
     }
 
@@ -69,12 +78,12 @@ public class Customer implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDetails() {

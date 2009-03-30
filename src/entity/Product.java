@@ -49,9 +49,9 @@ public class Product implements Serializable {
     private String article;
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ManyToOne()
-    private Category categoryId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId", fetch = FetchType.LAZY)
-    private Collection<Price> priceCollection;
+    private Category category;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.LAZY)
+    private Collection<Supply> supplyCollection;
 
     public Product() {
     }
@@ -89,20 +89,20 @@ public class Product implements Serializable {
         this.article = article;
     }
 
-    public Category getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(Category categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public Collection<Price> getPriceCollection() {
-        return priceCollection;
+    public Collection<Supply> getSupplyCollection() {
+        return supplyCollection;
     }
 
-    public void setPriceCollection(Collection<Price> priceCollection) {
-        this.priceCollection = priceCollection;
+    public void seSupplyCollection(Collection<Supply> supplyCollection) {
+        this.supplyCollection = supplyCollection;
     }
 
     @Override
