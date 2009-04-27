@@ -30,6 +30,9 @@ private static final Session session;
                     .addAnnotatedClass(entity.Product.class)
                     .addAnnotatedClass(entity.Category.class)
                     .addAnnotatedClass(entity.Customer.class)
+                    .addAnnotatedClass(entity.Bill.class)
+                    .addAnnotatedClass(entity.Invoice.class)
+                    .addAnnotatedClass(entity.InvoiceProduct.class)
                     .configure().buildSessionFactory();
             session = sessionFactory.openSession();
         } catch (Exception ex) {

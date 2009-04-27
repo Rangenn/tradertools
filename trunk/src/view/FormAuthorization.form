@@ -31,20 +31,18 @@
                           <Component id="jLabelPassword" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jPasswordField" max="32767" attributes="1"/>
-                          <Component id="jTextFieldUserName" alignment="0" pref="159" max="32767" attributes="1"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jTextFieldUserName" pref="184" max="32767" attributes="1"/>
+                          <Component id="jPasswordField" alignment="0" pref="184" max="32767" attributes="1"/>
                       </Group>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Component id="jButtonHelp" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="70" max="32767" attributes="0"/>
-                      <Component id="jButtonOk" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButtonCancel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="93" max="32767" attributes="0"/>
+                      <Component id="jPanelOkCancel1" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -61,11 +59,10 @@
                   <Component id="jPasswordField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabelPassword" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButtonCancel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButtonOk" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButtonHelp" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="jButtonHelp" min="-2" max="-2" attributes="0"/>
+                  <Component id="jPanelOkCancel1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -79,28 +76,23 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelUserName">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Username"/>
+        <Property name="text" type="java.lang.String" value="Username:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelPassword">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Password"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButtonOk">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="OK"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButtonCancel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Cancel"/>
+        <Property name="text" type="java.lang.String" value="Password:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonHelp">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/view/resources/icons/question_frame.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Help"/>
       </Properties>
+    </Component>
+    <Component class="view.JPanelOkCancel" name="jPanelOkCancel1">
     </Component>
   </SubComponents>
 </Form>

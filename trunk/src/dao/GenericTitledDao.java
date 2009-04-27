@@ -28,7 +28,7 @@ public class GenericTitledDao<T, PK extends Serializable> extends GenericDaoHib{
         Transaction t = HibUtil.getSession().beginTransaction();
         List<T> res =  HibUtil.getSession().createCriteria(type)
                 .add(Restrictions.like("title", titleLike))
-                .addOrder(Order.asc("title"))
+                .addOrder(Order.asc("title")) //офонарел штоле сортировать по полю, которое у всех в выборке одинаково!
                 .list();
         t.commit();
         return res;
@@ -36,11 +36,11 @@ public class GenericTitledDao<T, PK extends Serializable> extends GenericDaoHib{
 
     @Override
     public List<T> getList(){
-        Transaction t = HibUtil.getSession().beginTransaction();
+//        Transaction t = HibUtil.getSession().beginTransaction();
         List<T> res = HibUtil.getSession().createCriteria(type)
                 .addOrder(Order.asc("title"))
                 .list();
-        t.commit();
+//        t.commit();
         return res;
      }
     
@@ -54,4 +54,9 @@ public class GenericTitledDao<T, PK extends Serializable> extends GenericDaoHib{
         }
         return res;
     }
+
+    public boolean exists(String titleLike) {
+        return (get(titleLike) != null);
+    }
+
 }

@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,17 +44,16 @@ public class Category implements Serializable {
     @Column(name = "title")
     private String title;
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    private Collection<Product> productCollection;
+    private List<Product> productCollection;
 
     public Category() {
     }
 
-    public Category(Integer id) {
-        this.id = id;
-    }
+//    public Category(Integer id) {
+//        this.id = id;
+//    }
 
-    public Category(Integer id, String title) {
-        this.id = id;
+    public Category(String title) {
         this.title = title;
     }
 
@@ -73,11 +73,11 @@ public class Category implements Serializable {
         this.title = title;
     }
 
-    public Collection<Product> getProductCollection() {
+    public List<Product> getProductCollection() {
         return productCollection;
     }
 
-    public void setProductCollection(Collection<Product> productCollection) {
+    public void setProductCollection(List<Product> productCollection) {
         this.productCollection = productCollection;
     }
 

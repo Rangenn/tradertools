@@ -5,7 +5,9 @@
 
 package controller;
 
+import dao.DaoException;
 import dao.DaoFactory;
+import dao.SupplyDao;
 import entity.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -23,7 +26,7 @@ import javax.swing.text.BadLocationException;
 import org.hibernate.exception.JDBCConnectionException;
 import util.PropsUtil;
 import view.*;
-import view.componentmodels.CMCategory;
+import view.componentmodels.GenericListModel;
 /**
  *
  * @author е
@@ -31,11 +34,7 @@ import view.componentmodels.CMCategory;
 public class SupplyListTool {
 
     FormSupplyList FSupplyList;
-    FormProductsList FProductsList;
     List<Supply> ListSupplies;
-    //SupplyDao SupplyDao;
-    //ProductDao ProductDao;
-    //CategoryDao CategoryDao;
 
     public SupplyListTool(){
         try{
@@ -45,134 +44,54 @@ public class SupplyListTool {
             System.out.println(ex.toString());
         }        
 
-        //SupplyDao = new SupplyDao();
-        //ProductDao = new ProductDao();
-        //CategoryDao = new CategoryDao();
         ListSupplies = DaoFactory.getSupplyDao().getList();
 
         FSupplyList = new FormSupplyList(ListSupplies);
+        JPanelAddEditRemove aer = FSupplyList.getJPanelSupplyList().getJPanelAddEditRemove();
 
         ActionListener l = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                StartAddPrice();
+                StartAddSupply();
             }
         };
-        FSupplyList.addjMenuItemAddActionListener(l);
+//        FSupplyList.addjMenuItemAddActionListener(l);
+        aer.addjButtonAddActionListener(l);
+        l = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                StartEditSupply();
+            }
+        };
+//        FSupplyList.addjMenuItemEditActionListener(l);
+        aer.addjButtonEditActionListener(l);
 
         l = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                StartEditPrice();
+                StartDeleteSupply();
             }
         };
-        FSupplyList.addjMenuItemEditActionListener(l);
-
-        l = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                StartDeletePrice();
-            }
-        };
-        FSupplyList.addjMenuItemDeleteActionListener(l);
-
-        DocumentListener dl = new DocumentListenerSearch();
-        FSupplyList.getJPanelSearch().addjTextFieldSearchTemplateDocumentListener(dl);
-
-        l = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int index = 0;
-                try {
-                    index = FSupplyList.getSelectedPriceIndex() + 1;
-                    if (index == ListSupplies.size()) index = 0;
-                } catch (ArrayIndexOutOfBoundsException ex) {
-                    Logger.getLogger(SupplyListTool.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
-                }
-                SearchNext(FSupplyList.getJPanelSearch().getSearchTemplate(), index);
-            }
-        };
-        FSupplyList.getJPanelSearch().addjButtonNextActionListener(l);
-
-        l = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int index = ListSupplies.size() - 1;
-                try {
-                    index = FSupplyList.getSelectedPriceIndex() - 1;
-                    if (index == -1) index = ListSupplies.size() - 1;
-                } catch (ArrayIndexOutOfBoundsException ex) {
-                    Logger.getLogger(SupplyListTool.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
-                }
-                SearchPrev(FSupplyList.getJPanelSearch().getSearchTemplate(), index);
-            }
-        };
-        FSupplyList.getJPanelSearch().addjButtonPrevActionListener(l);
+//        FSupplyList.addjMenuItemDeleteActionListener(l);
+        aer.addjButtonRemoveActionListener(l);
 
         FSupplyList.setVisible(true);
     }
+   
 
-    public void Search(DocumentEvent e)
-    {
-        try {
-            SearchNext(e.getDocument().getText(0, e.getDocument().getLength()), 0);
-        } catch (BadLocationException ex) {
-            Logger.getLogger(SupplyListTool.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    //SearchNext и SearchPrev требуют рефакторинга!
-    public void SearchNext(String template, int pos)
-    {
-        if (template == null || template.equals("")) return;
-        if (pos < 0 || pos >= ListSupplies.size()) return;
-        for(int i = pos; i < ListSupplies.size(); i++){
-            if (ListSupplies.get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
-                FSupplyList.setSelectedPrice(i);
-                FSupplyList.getJPanelSearch().setHavingResult(true);
-                return;
-            }
-        }
-        for(int i = 0; i < pos; i++)
-            if (ListSupplies.get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
-                FSupplyList.setSelectedPrice(i);
-                FSupplyList.getJPanelSearch().setHavingResult(true);
-                return;
-            }
-        
-        FSupplyList.getJPanelSearch().setHavingResult(false);
-    }
-
-    public void SearchPrev(String template, int pos)
-    {
-        if (template == null || template.equals("")) return;
-        if (pos < 0 || pos >= ListSupplies.size()) return;
-        for(int i = pos; i >= 0; i--){
-            if (ListSupplies.get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
-                FSupplyList.setSelectedPrice(i);
-                FSupplyList.getJPanelSearch().setHavingResult(true);
-                return;
-            }
-        }
-        for(int i = ListSupplies.size() - 1; i > pos; i--)
-            if (ListSupplies.get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
-                FSupplyList.setSelectedPrice(i);
-                FSupplyList.getJPanelSearch().setHavingResult(true);
-                return;
-            }
-        FSupplyList.getJPanelSearch().setHavingResult(false);
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="PriceFGIE">
+    // <editor-fold defaultstate="collapsed" desc="SupplyFGIE">
     private String      title, article;
     private BigDecimal  actualprice;
     private int         amountleft;
     private Category    category;
 
     //инициализация формы редактирования
-    private FormGenericItemEditor configurePriceFGIE(String title) {
+    private FormGenericItemEditor configureSupplyFGIE(String title) {
         FormGenericItemEditor FGIE = new FormGenericItemEditor(4, 1);
         List<JTextField> list = FGIE.getTextFields();
         list.get(0).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Supply.Title")));
         list.get(1).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Supply.Article")));
-        list.get(2).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Supply.ActualPrice")));
-        list.get(3).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Supply.AmountLeft")));
+        list.get(2).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Supply.AmountLeft")));
+        list.get(3).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Supply.ActualPrice")));
         FGIE.getComboBoxes().get(0).setBorder(BorderFactory.createTitledBorder(PropsUtil.getProperty("Supply.Category")));
-        FGIE.getComboBoxes().get(0).setModel(new CMCategory((DaoFactory.getCategoryDao().getList())));
+        FGIE.getComboBoxes().get(0).setModel(new GenericListModel<Category>((DaoFactory.getCategoryDao().getList())));
         //FGIE.addjButtonOkActionListener(OkActionListener);
         FGIE.setTitle(title);
         FGIE.setVisible(true);
@@ -180,17 +99,20 @@ public class SupplyListTool {
     }
 
     //получить параметры из формы в глобальные переменные этого класса
-    private boolean  EndPriceFGIE(FormGenericItemEditor FGIE){
+    private boolean  EndSupplyFGIE(FormGenericItemEditor FGIE){
         title = FGIE.getTextFields().get(0).getText();
         article = FGIE.getTextFields().get(1).getText();
-        amountleft = Integer.valueOf(FGIE.getTextFields().get(2).getText());
+        //amountleft = Integer.valueOf(FGIE.getTextFields().get(2).getText());
         String sp = FGIE.getTextFields().get(3).getText();
         if (title.equals("") || sp.equals("")){
             JOptionPane.showMessageDialog(FGIE, "Не все поля заполнены", FGIE.getTitle(), JOptionPane.ERROR_MESSAGE);
             return false;//выход до вызова dispose, возврат к форме редактирования
         }
         try {
-            actualprice = (sp == null || sp.equals("")) ? null : new BigDecimal(sp);
+            actualprice = new BigDecimal(sp);
+            if (!FGIE.getTextFields().get(2).getText().equals(""))
+                amountleft = Integer.valueOf(FGIE.getTextFields().get(2).getText());
+            else amountleft = 0;
         }
         catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(FGIE, "Числовые поля заполнены некорректно", FGIE.getTitle(), JOptionPane.ERROR_MESSAGE);
@@ -201,37 +123,43 @@ public class SupplyListTool {
         return true;
     }
 
-    public void StartAddPrice(){        
-        final FormGenericItemEditor FGIE = configurePriceFGIE("New Price");
+    public void StartAddSupply(){
+        final FormGenericItemEditor FGIE = configureSupplyFGIE("New Supply");
         ActionListener l = new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                if (EndPriceFGIE(FGIE))
-                    EndAddPrice();
+                if (EndSupplyFGIE(FGIE))
+                    EndAddSupply();
             }
         };
         FGIE.addjButtonOkActionListener(l);
     }
 
 
-    private void EndAddPrice(){               
-//        try {
-            Supply p = DaoFactory.getSupplyDao().create("Тихонов", title, article, category, 1, actualprice);
-            ListSupplies.add(p);
-            FSupplyList.getJPanelPriceList().getTable().revalidate();
-//        } catch (DaoException ex) {
-//            Logger.getLogger(SupplyListTool.class.getName()).log(Level.SEVERE, null, ex);
-//            JOptionPane.showMessageDialog(FSupplyList, ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-//        }
+    private void EndAddSupply(){
+      try {
+
+        Supply s = DaoFactory.getSupplyDao().create(SupplyDao.createPK("Тихонов", title), 0, actualprice);
+        s.setAmountLeft(amountleft);
+        DaoFactory.getSupplyDao().update(s);
+        s.getProduct().setArticle(article);
+        s.getProduct().setCategory(category);
+        DaoFactory.getProductDao().update(s.getProduct());
+        ListSupplies.add(s);
+        FSupplyList.getJPanelSupplyList().getTable().revalidate();
+        } catch (DaoException ex) {
+            Logger.getLogger(SupplyListTool.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(FSupplyList, ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    public void StartEditPrice(){
-        final FormGenericItemEditor FGIE = configurePriceFGIE("Edit Price");
+    public void StartEditSupply(){
+        final FormGenericItemEditor FGIE = configureSupplyFGIE("Edit Supply");
         ActionListener l = new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                if (EndPriceFGIE(FGIE))
-                    EndEditPrice();
+                if (EndSupplyFGIE(FGIE))
+                    EndEditSupply();
             }
         };
         FGIE.addjButtonOkActionListener(l);
@@ -245,27 +173,32 @@ public class SupplyListTool {
         FGIE.getComboBoxes().get(0).setSelectedItem(p.getProduct().getCategory());
     }
 
-    public void EndEditPrice(){
+    public void EndEditSupply(){
 //        try {
             Supply buf = FSupplyList.getSelectedPrice();
-            DaoFactory.getSupplyDao().update(buf, title, article, amountleft, actualprice, category);
-            FSupplyList.getJPanelPriceList().getTable().revalidate();
+            if (!actualprice.equals(buf.getActualPrice()))
+                    buf.setPrevPrice(buf.getActualPrice());
+            buf.setActualPrice(actualprice);
+            buf.setAmountLeft(amountleft);
+            Product pr = buf.getProduct();
+            //pr.setCategory(category);
+            DaoFactory.getProductDao().update(pr, title);
+            DaoFactory.getProductDao().update(pr, article, category);
+            DaoFactory.getSupplyDao().update(buf);
+            FSupplyList.getJPanelSupplyList().getTable().revalidate();
 //        } catch (DaoException ex) {
 //            Logger.getLogger(SupplyListTool.class.getName()).log(Level.SEVERE, null, ex);
 //            JOptionPane.showMessageDialog(FSupplyList, ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
 //        }
     }
 
-    public void StartDeletePrice(){
-        DeletePrice(FSupplyList.getSelectedPrice());
-    }
-
-    public void DeletePrice(Supply o){
-        if (JOptionPane.showConfirmDialog(FSupplyList, "Вы уверены, что хотите удалить " + o.getProduct().getTitle()
+    public void StartDeleteSupply(){
+        Supply s = FSupplyList.getSelectedPrice();
+        if (JOptionPane.showConfirmDialog(FSupplyList, "Вы уверены, что хотите удалить " + s.getProduct().getTitle()
                 + "?\n", "Удаление", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
-        DaoFactory.getSupplyDao().delete(o);
-        ListSupplies.remove(o);
-        FSupplyList.getJPanelPriceList().getTable().revalidate();
+        DaoFactory.getSupplyDao().delete(s);
+        ListSupplies.remove(s);
+        FSupplyList.getJPanelSupplyList().getTable().revalidate();
     }
 
     // </editor-fold>
@@ -277,23 +210,4 @@ public class SupplyListTool {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }       
     }
-
-    private class DocumentListenerSearch implements DocumentListener {
-
-        public DocumentListenerSearch() {
-        }
-
-        public void insertUpdate(DocumentEvent e) {
-            Search(e);
-        }
-
-        public void removeUpdate(DocumentEvent e) {
-            Search(e);
-        }
-
-        public void changedUpdate(DocumentEvent e) {
-            Search(e);
-        }
-    }
-
 }

@@ -16,61 +16,69 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jLabelAccount" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelComment" pref="122" max="32767" attributes="0"/>
-                  <Component id="jLabelITX" pref="122" max="32767" attributes="0"/>
-                  <Component id="jLabelAddress" pref="122" max="32767" attributes="0"/>
-                  <Component id="jLabelTitle" pref="122" max="32767" attributes="0"/>
+                  <Component id="jLabelEmail" min="-2" pref="85" max="-2" attributes="0"/>
+                  <Component id="jLabelITN" min="-2" pref="85" max="-2" attributes="0"/>
+                  <Component id="jLabelAddress" min="-2" pref="85" max="-2" attributes="0"/>
+                  <Component id="jLabelTitle" min="-2" pref="85" max="-2" attributes="0"/>
+                  <Component id="jLabelComment" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jTextFieldComment" alignment="0" pref="450" max="32767" attributes="3"/>
-                  <Component id="jTextFieldAccount" alignment="0" pref="450" max="32767" attributes="0"/>
-                  <Component id="jTextFieldAddress" alignment="0" pref="450" max="32767" attributes="3"/>
+                  <Component id="jTextFieldComment" alignment="1" pref="421" max="32767" attributes="0"/>
+                  <Component id="jTextFieldEmail" alignment="0" pref="421" max="32767" attributes="2"/>
+                  <Component id="jTextFieldAccount" alignment="0" pref="421" max="32767" attributes="0"/>
+                  <Component id="jTextFieldAddress" alignment="0" pref="421" max="32767" attributes="2"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="jTextFieldITX" pref="216" max="32767" attributes="2"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jLabelPhone" pref="77" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextFieldPhone" min="-2" pref="143" max="-2" attributes="2"/>
+                      <Component id="jTextFieldITN" pref="210" max="32767" attributes="2"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelPhone" min="-2" pref="54" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldPhone" min="-2" pref="149" max="-2" attributes="2"/>
                   </Group>
-                  <Component id="jTextFieldTitle" alignment="0" pref="450" max="32767" attributes="3"/>
+                  <Component id="jTextFieldTitle" alignment="0" pref="421" max="32767" attributes="2"/>
               </Group>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jTextFieldTitle" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="jLabelTitle" alignment="3" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jLabelTitle" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                      <Component id="jLabelAddress" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      <Component id="jLabelITN" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      <Component id="jLabelAccount" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      <Component id="jLabelEmail" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" max="-2" attributes="0">
+                      <Component id="jTextFieldTitle" min="-2" pref="20" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldAddress" min="-2" pref="20" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" max="-2" attributes="0">
+                          <Component id="jTextFieldITN" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="jLabelPhone" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextFieldPhone" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldAccount" min="-2" pref="20" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldEmail" min="-2" pref="20" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jTextFieldAddress" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="jLabelAddress" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jTextFieldITX" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="jLabelPhone" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextFieldPhone" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="jLabelITX" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jTextFieldAccount" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="jLabelAccount" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jTextFieldComment" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="jTextFieldComment" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabelComment" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -86,19 +94,19 @@
         <Property name="text" type="java.lang.String" value="&#x410;&#x434;&#x440;&#x435;&#x441;:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabelITX">
+    <Component class="javax.swing.JLabel" name="jLabelITN">
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x418;&#x41d;&#x41d;:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabelComment">
+    <Component class="javax.swing.JLabel" name="jLabelEmail">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&#x41a;&#x43e;&#x43c;&#x43c;&#x435;&#x43d;&#x442;&#x430;&#x440;&#x438;&#x439;:"/>
+        <Property name="text" type="java.lang.String" value="E-mail:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextFieldComment">
+    <Component class="javax.swing.JTextField" name="jTextFieldEmail">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&#x431;&#x435;&#x440;&#x435;&#x442; &#x43d;&#x430; &#x440;&#x435;&#x430;&#x43b;&#x438;&#x437;&#x430;&#x446;&#x438;&#x44e;"/>
+        <Property name="text" type="java.lang.String" value="ivanov@mail.ru"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelPhone">
@@ -111,14 +119,13 @@
         <Property name="text" type="java.lang.String" value="89201234455"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextFieldITX">
+    <Component class="javax.swing.JTextField" name="jTextFieldITN">
       <Properties>
         <Property name="text" type="java.lang.String" value="3332224445/123123123"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldAddress">
       <Properties>
-        <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" value="&#x433;.&#x420;&#x43e;&#x441;&#x441;&#x43e;&#x448;&#x44c;"/>
       </Properties>
     </Component>
@@ -135,6 +142,16 @@
     <Component class="javax.swing.JTextField" name="jTextFieldAccount">
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x440;/&#x441; &#x2116; 12312312300000001123 &#x432; &#x421;&#x431;&#x435;&#x440;&#x431;&#x430;&#x43d;&#x43a; &#x420;&#x43e;&#x441;&#x441;&#x438;&#x438; &#x433;.&#x41c;&#x43e;&#x441;&#x43a;&#x432;&#x430;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelComment">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x41a;&#x43e;&#x43c;&#x43c;&#x435;&#x43d;&#x442;&#x430;&#x440;&#x438;&#x439;:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldComment">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x411;&#x435;&#x437; &#x43a;&#x43e;&#x43c;&#x43c;&#x435;&#x43d;&#x442;&#x430;&#x440;&#x438;&#x435;&#x432;!"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,18 +52,25 @@ public class Product implements Serializable {
     @ManyToOne()
     private Category category;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.LAZY)
-    private Collection<Supply> supplyCollection;
+    private List<Supply> supplyCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.LAZY)
+    private List<InvoiceProduct> InvoiceProductCollection;
 
     public Product() {
     }
 
-    public Product(Integer id) {
-        this.id = id;
+//    public Product(Integer id) {
+//        this.id = id;
+//    }
+
+    public Product(String title) {
+        this.title = title;
     }
 
-    public Product(Integer id, String title) {
-        this.id = id;
+    public Product(String title, String article, Category category) {
         this.title = title;
+        this.article = article;
+        this.category = category;
     }
 
     public Integer getId() {
@@ -97,11 +105,11 @@ public class Product implements Serializable {
         this.category = category;
     }
 
-    public Collection<Supply> getSupplyCollection() {
+    public List<Supply> getSupplyCollection() {
         return supplyCollection;
     }
 
-    public void seSupplyCollection(Collection<Supply> supplyCollection) {
+    public void seSupplyCollection(List<Supply> supplyCollection) {
         this.supplyCollection = supplyCollection;
     }
 
@@ -128,6 +136,20 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return getTitle();
+    }
+
+    /**
+     * @return the InvoiceProductCollection
+     */
+    public List<InvoiceProduct> getInvoiceProductCollection() {
+        return InvoiceProductCollection;
+    }
+
+    /**
+     * @param InvoiceProductCollection the InvoiceProductCollection to set
+     */
+    public void setInvoiceProductCollection(List<InvoiceProduct> InvoiceProductCollection) {
+        this.InvoiceProductCollection = InvoiceProductCollection;
     }
 
 }

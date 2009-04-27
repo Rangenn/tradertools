@@ -6,6 +6,7 @@
 package dao;
 
 import entity.Category;
+import util.PropsUtil;
 
 /**
  *
@@ -18,19 +19,21 @@ public class CategoryDao extends GenericTitledDao<Category, Integer> {
     }
 
     public Category create(String title){
-        if (title == null || title.equals("")) return null;
+        if (badString(title)) return null;
         Category c = this.get(title);
         if (c == null){
-            c = new Category();
-            c.setTitle(title);
+            c = new Category(title);
             create(c);
         }
         return c;
     }
 
-    public void update(Category c, String title){
-        if (title == null || title.equals("")) return;
+    public void update(Category c, String title) throws DaoException{
+        if (badString(title)) return;
+        if (exists(title))
+            throw new DaoException(PropsUtil.getProperty("DaoException.ObjectExists"));        
         c.setTitle(title);
+        //try
         this.update(c);
     }
 }

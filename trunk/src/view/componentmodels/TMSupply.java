@@ -55,16 +55,17 @@ public class TMSupply extends AbstractTableModel{
                 case 0: { return rowIndex; }
                 case 1: { return buf.getProduct().getTitle(); }
                 case 2: { return buf.getProduct().getArticle(); }
-                case 3: { return buf.getActualPrice().setScale(0, BigDecimal.ROUND_HALF_UP).intValue(); }
-                case 4: { return buf.getAmountMin(); }
+                case 4: { return buf.getActualPrice().setScale(0, BigDecimal.ROUND_HALF_UP).intValue(); }
+                case 3: { return buf.getAmountMin(); }
                 case 5: { return buf.getAmountLeft(); }
                 case 6: { return buf.getProduct().getCategory(); }
+                default: { return null; }
             }
         }
         catch (NullPointerException ex){
-
+            this.fireTableDataChanged(); //хммм
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -74,8 +75,8 @@ public class TMSupply extends AbstractTableModel{
             case 0: { return PropsUtil.getProperty("Index"); }
             case 1: { return PropsUtil.getProperty("Supply.Title"); }
             case 2: { return PropsUtil.getProperty("Supply.Article"); }
-            case 3: { return PropsUtil.getProperty("Supply.ActualPrice"); }
-            case 4: { return PropsUtil.getProperty("Supply.AmountMin"); }
+            case 4: { return PropsUtil.getProperty("Supply.ActualPrice"); }
+            case 3: { return PropsUtil.getProperty("Supply.AmountMin"); }
             case 5: { return PropsUtil.getProperty("Supply.AmountLeft"); }
             case 6: { return PropsUtil.getProperty("Supply.Category"); }
         }

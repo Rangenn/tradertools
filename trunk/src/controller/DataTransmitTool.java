@@ -8,10 +8,12 @@ package controller;
 
 import dao.DaoFactory;
 import dao.SupplyDao;
+import entity.Category;
 import entity.Supply;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -82,6 +84,9 @@ public class DataTransmitTool {
 
         int ctr = 0;
         String category = null;
+        Category cat;
+        Supply s;
+        BigDecimal a;
         for (int i = 0; i < data.length; i++) {
 //            Query =
 //                "INSERT INTO product (title, article) " +
@@ -91,7 +96,17 @@ public class DataTransmitTool {
                 if (data[i].length < 4)
                     category = null;
                 else category = data[i][3];
-                DaoFactory.getSupplyDao().create("Тихонов", data[i][0], data[i][1], category, 0,  data[i][2]);
+                cat = DaoFactory.getCategoryDao().create(category);
+                //try {
+                //= (data[i][2] == null || data[i][2].equals("")) ? null :
+                a = new BigDecimal(data[i][2]);
+                //}
+                //catch (NumberFormatException ex) { a = null; }
+                s = DaoFactory.getSupplyDao().create(SupplyDao.createPK("Тихонов", data[i][0]),
+                         0,  a);
+                s.getProduct().setArticle(data[i][1]);
+                s.getProduct().setCategory(cat);
+                DaoFactory.getProductDao().update(s.getProduct());
             }
             catch (Exception ex){//test
                 ctr++;

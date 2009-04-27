@@ -13,6 +13,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.event.DocumentListener;
 import util.PropsUtil;
 
@@ -38,23 +39,23 @@ public class JPanelSearch extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabelFind = new javax.swing.JLabel();
         jTextFieldSearchTemplate = new javax.swing.JTextField();
         jButtonNext = new javax.swing.JButton();
-        jLabelFind = new javax.swing.JLabel();
         jButtonPrev = new javax.swing.JButton();
+
+        jLabelFind.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/icons/binocular.png"))); // NOI18N
+        jLabelFind.setText("Find:");
 
         jTextFieldSearchTemplate.setPreferredSize(new java.awt.Dimension(100, 20));
 
-        jButtonNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/arrow_270.png"))); // NOI18N
+        jButtonNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/icons/arrow_270.png"))); // NOI18N
         jButtonNext.setText("Next");
         jButtonNext.setMaximumSize(new java.awt.Dimension(73, 23));
         jButtonNext.setMinimumSize(new java.awt.Dimension(73, 23));
         jButtonNext.setPreferredSize(new java.awt.Dimension(90, 23));
 
-        jLabelFind.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/binocular.png"))); // NOI18N
-        jLabelFind.setText("Find:");
-
-        jButtonPrev.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/arrow_090.png"))); // NOI18N
+        jButtonPrev.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/icons/arrow_090.png"))); // NOI18N
         jButtonPrev.setText("Prev.");
         jButtonPrev.setPreferredSize(new java.awt.Dimension(90, 25));
 
@@ -63,26 +64,21 @@ public class JPanelSearch extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelFind)
+                .addComponent(jLabelFind, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextFieldSearchTemplate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextFieldSearchTemplate, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonNext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonNext, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonPrev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButtonPrev, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                    .addComponent(jLabelFind)
-                    .addComponent(jButtonNext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldSearchTemplate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonPrev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                .addComponent(jLabelFind)
+                .addComponent(jButtonNext, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextFieldSearchTemplate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonPrev, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -144,23 +140,17 @@ public class JPanelSearch extends javax.swing.JPanel {
     public void setSearchTemplate(String template){
         jTextFieldSearchTemplate.setText(template);
     }
-//    /**
-//     * @return the jButtonSearch
-//     */
-//    public javax.swing.JButton getJButtonNext() {
-//        return jButtonNext;
-//    }
-//
-//    /**
-//     * @return the jTextFieldSearchTemplate
-//     */
-//    public javax.swing.JTextField getJTextFieldSearchTemplate() {
-//        return jTextFieldSearchTemplate;
-//    }
 
     private void loadTextProps() {
         jLabelFind.setText(PropsUtil.getProperty("JPanelSearch.jLabelFind.text"));
         jButtonNext.setText(PropsUtil.getProperty("JPanelSearch.jButtonNext.text"));
         jButtonPrev.setText(PropsUtil.getProperty("JPanelSearch.jButtonPrev.text"));
+//        jLabelFind.setIcon(new ImageIcon(
+//                getClass().getResource(PropsUtil.getProperty("icon.find"))));
+//        jButtonNext.setIcon(new ImageIcon(
+//                getClass().getResource(PropsUtil.getProperty("icon.down"))));
+//        jButtonPrev.setIcon(new ImageIcon(
+//                getClass().getResource(PropsUtil.getProperty("icon.up"))));
+
     }
 }

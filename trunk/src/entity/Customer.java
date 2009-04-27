@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,41 +33,62 @@ import javax.persistence.Table;
 )
 @Entity
 @Table(name = "customer")
-@NamedQueries({@NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c")})
+//@NamedQueries({@NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c"), @NamedQuery(name = "Customer.findById", query = "SELECT c FROM Customer c WHERE c.id = :id"), @NamedQuery(name = "Customer.findByTitle", query = "SELECT c FROM Customer c WHERE c.title = :title"), @NamedQuery(name = "Customer.findByIsSupplier", query = "SELECT c FROM Customer c WHERE c.isSupplier = :isSupplier"), @NamedQuery(name = "Customer.findByItn", query = "SELECT c FROM Customer c WHERE c.itn = :itn"), @NamedQuery(name = "Customer.findByAccount", query = "SELECT c FROM Customer c WHERE c.account = :account"), @NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :address"), @NamedQuery(name = "Customer.findByPhone", query = "SELECT c FROM Customer c WHERE c.phone = :phone"), @NamedQuery(name = "Customer.findByEmail", query = "SELECT c FROM Customer c WHERE c.email = :email"), @NamedQuery(name = "Customer.findByCommentary", query = "SELECT c FROM Customer c WHERE c.commentary = :commentary")})
 public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id")
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_GEN")
+    @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
     @Column(name = "title")
     private String title;
-    @Column(name = "details")
-    private String details;
+    @Basic(optional = false)
+    @Column(name = "is_supplier")
+    private boolean isSupplier;
+    @Column(name = "itn")
+    private String itn;
+    @Column(name = "account")
+    private String account;
     @Column(name = "address")
     private String address;
     @Column(name = "phone")
     private String phone;
     @Column(name = "email")
     private String email;
-    @Basic(optional = false)
-    @Column(name = "is_supplier")
-    private boolean isSupplier;
+    @Column(name = "commentary")
+    private String commentary;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sender", fetch = FetchType.LAZY)
+    private List<Bill> billsMakedOutCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "receiver", fetch = FetchType.LAZY)
+    private List<Bill> billsReceivedCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer", fetch = FetchType.LAZY)
+    private List<Invoice> invoicesReceivedCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "seller", fetch = FetchType.LAZY)
+    private List<Invoice> invoicesMakedOutCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)
-    private Collection<Supply> supplyCollection;
+    private List<Supply> supplyCollection;
 
     public Customer() {
     }
 
-    public Customer(Integer id) {
-        this.id = id;
+//    public Customer(Integer id) {
+//        this.id = id;
+//    }
+
+    public Customer(String title, boolean isSupplier) {
+        this.title = title;
+        this.isSupplier = isSupplier;
     }
 
-    public Customer(Integer id, String name, boolean isSupplier) {
-        this.id = id;
-        this.title = name;
+    public Customer(String title, String ITN, String account, String Phone, String Email, String comment, boolean isSupplier) {
+        this.title = title;
+        this.itn = ITN;
+        this.account = account;
+        this.phone = Phone;
+        this.email = Email;
+        this.commentary = comment;
         this.isSupplier = isSupplier;
     }
 
@@ -86,12 +108,28 @@ public class Customer implements Serializable {
         this.title = title;
     }
 
-    public String getDetails() {
-        return details;
+    public boolean getIsSupplier() {
+        return isSupplier;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setIsSupplier(boolean isSupplier) {
+        this.isSupplier = isSupplier;
+    }
+
+    public String getItn() {
+        return itn;
+    }
+
+    public void setItn(String itn) {
+        this.itn = itn;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getAddress() {
@@ -118,19 +156,51 @@ public class Customer implements Serializable {
         this.email = email;
     }
 
-    public boolean getIsSupplier() {
-        return isSupplier;
+    public String getCommentary() {
+        return commentary;
     }
 
-    public void setIsSupplier(boolean isSupplier) {
-        this.isSupplier = isSupplier;
+    public void setCommentary(String commentary) {
+        this.commentary = commentary;
     }
 
-    public Collection<Supply> getSupplyCollection() {
+    public List<Bill> getBillsMakedOutCollection() {
+        return billsMakedOutCollection;
+    }
+
+    public void setBillsMakedOutCollection(List<Bill> billCollection) {
+        this.billsMakedOutCollection = billCollection;
+    }
+
+    public List<Bill> getBillsReceivedCollection() {
+        return billsReceivedCollection;
+    }
+
+    public void setBillsReceivedCollection(List<Bill> billCollection) {
+        this.billsReceivedCollection = billCollection;
+    }
+
+    public List<Invoice> getInvoicesReceivedCollection() {
+        return invoicesReceivedCollection;
+    }
+
+    public void setInvoicesReceivedCollection(List<Invoice> invoiceCollection) {
+        this.invoicesReceivedCollection = invoiceCollection;
+    }
+
+    public List<Invoice> getInvoicesMakedOutCollection() {
+        return invoicesMakedOutCollection;
+    }
+
+    public void setInvoicesMakedOutCollection(List<Invoice> invoiceCollection) {
+        this.invoicesMakedOutCollection = invoiceCollection;
+    }
+
+    public List<Supply> getSupplyCollection() {
         return supplyCollection;
     }
 
-    public void setSupplyCollection(Collection<Supply> supplyCollection) {
+    public void setSupplyCollection(List<Supply> supplyCollection) {
         this.supplyCollection = supplyCollection;
     }
 
@@ -156,7 +226,7 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Customer[id=" + id + "]";
+        return getTitle();
     }
 
 }

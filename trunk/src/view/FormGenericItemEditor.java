@@ -175,8 +175,8 @@ public class FormGenericItemEditor extends javax.swing.JFrame {
 //    }
 
     private void loadTextProps() {
-        jButtonOk.setText(PropsUtil.getProps().getProperty("jButtonOk.text"));
-        jButtonCancel.setText(PropsUtil.getProps().getProperty("jButtonCancel.text"));
+        jButtonOk.setText(PropsUtil.getProps().getProperty("Ok.text"));
+        jButtonCancel.setText(PropsUtil.getProps().getProperty("Cancel.text"));
     }
 
 }

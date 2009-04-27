@@ -17,34 +17,36 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="jLabelFind" min="-2" max="-2" attributes="0"/>
+              <Component id="jLabelFind" min="-2" pref="47" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-              <Component id="jTextFieldSearchTemplate" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jButtonNext" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButtonPrev" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <Component id="jTextFieldSearchTemplate" min="-2" pref="87" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+              <Component id="jButtonNext" min="-2" pref="87" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="1"/>
+              <Component id="jButtonPrev" min="-2" pref="79" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" max="-2" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" max="-2" attributes="0">
-                  <Component id="jLabelFind" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButtonNext" alignment="3" min="-2" max="-2" attributes="1"/>
-                  <Component id="jTextFieldSearchTemplate" alignment="3" min="-2" max="-2" attributes="1"/>
-                  <Component id="jButtonPrev" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="3" max="-2" attributes="0">
+              <Component id="jLabelFind" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Component id="jButtonNext" alignment="3" min="-2" pref="24" max="-2" attributes="1"/>
+              <Component id="jTextFieldSearchTemplate" alignment="3" min="-2" max="-2" attributes="1"/>
+              <Component id="jButtonPrev" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
+    <Component class="javax.swing.JLabel" name="jLabelFind">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/view/resources/icons/binocular.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Find:"/>
+      </Properties>
+    </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldSearchTemplate">
       <Properties>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -55,7 +57,7 @@
     <Component class="javax.swing.JButton" name="jButtonNext">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/view/icons/arrow_270.png"/>
+          <Image iconType="3" name="/view/resources/icons/arrow_270.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Next"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -69,18 +71,10 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabelFind">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/view/icons/binocular.png"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Find:"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="jButtonPrev">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/view/icons/arrow_090.png"/>
+          <Image iconType="3" name="/view/resources/icons/arrow_090.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Prev."/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">

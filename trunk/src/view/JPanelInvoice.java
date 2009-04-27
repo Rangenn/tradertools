@@ -11,11 +11,15 @@
 
 package view;
 
+import entity.Invoice;
+
 /**
  *
  * @author е
  */
 public class JPanelInvoice extends javax.swing.JPanel {
+
+    private Invoice data;
 
     /** Creates new form JPanelInvoice */
     public JPanelInvoice() {
@@ -52,10 +56,10 @@ public class JPanelInvoice extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jLabelSum.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabelSum.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabelSum.setText("Итого:");
 
-        jLabelSumValue.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabelSumValue.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabelSumValue.setText("100235р");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -64,21 +68,22 @@ public class JPanelInvoice extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(10, 10, 10)
+                    .addGap(2, 2, 2)
                     .addComponent(jLabelSum)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jLabelSumValue))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE))
+                    .addComponent(jLabelSumValue)
+                    .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addComponent(jLabelInvoiceNumber))
+                .addComponent(jLabelInvoiceNumber)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabelInvoiceNumber)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelSum)
@@ -94,5 +99,34 @@ public class JPanelInvoice extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the data
+     */
+    public Invoice getData() {
+        return data;
+    }
+
+    /**
+     * @param data the data to set
+     */
+    public void setData(Invoice data) {
+        this.data = data;
+        updateFields();
+    }
+
+    protected void updateFields() {
+        if (data.getInvoiceSum() != null)
+            jLabelSumValue.setText(data.getInvoiceSum().toString());
+        jLabelInvoiceNumber.setText(data.getId().toString());
+        //getJTable().setModel(); //написать модель для List<InvoiceProduct>
+    }
+
+    /**
+     * @return the jTable1
+     */
+    public javax.swing.JTable getJTable() {
+        return jTable1;
+    }
 
 }

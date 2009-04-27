@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
 import util.PropsUtil;
@@ -36,12 +37,8 @@ public class FormSupplyList extends javax.swing.JFrame {
     /** Creates new form FormSupplyList */
     public FormSupplyList(List<Supply> list) {
         initComponents();
-        jPanelSupplyList1.setItemList(list);
-        try {
-            this.setIconImage(ImageIO.read(new File("src/view/icons/hammer_screwdriver.png")));
-        } catch (IOException ex) {
-            Logger.getLogger(FormSupplyList.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        jPanelSupplyList1.setItemList(list);     
         
         JCheckBoxMenuItem m = null;
         ActionListener l = new ActionListener() {
@@ -77,7 +74,7 @@ public class FormSupplyList extends javax.swing.JFrame {
         jMenuEdit = new javax.swing.JMenu();
         jMenuItemAdd = new javax.swing.JMenuItem();
         jMenuItemEdit = new javax.swing.JMenuItem();
-        jMenuItemDelete = new javax.swing.JMenuItem();
+        jMenuItemRemove = new javax.swing.JMenuItem();
         jMenuView = new javax.swing.JMenu();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
@@ -104,19 +101,16 @@ public class FormSupplyList extends javax.swing.JFrame {
         jMenuEdit.setText("Правка");
 
         jMenuItemAdd.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_EQUALS, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/notebook__plus.png"))); // NOI18N
         jMenuItemAdd.setText("Add");
         jMenuEdit.add(jMenuItemAdd);
 
         jMenuItemEdit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/notebook__pencil.png"))); // NOI18N
         jMenuItemEdit.setText("Edit");
         jMenuEdit.add(jMenuItemEdit);
 
-        jMenuItemDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
-        jMenuItemDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/notebook__minus.png"))); // NOI18N
-        jMenuItemDelete.setText("Delete");
-        jMenuEdit.add(jMenuItemDelete);
+        jMenuItemRemove.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
+        jMenuItemRemove.setText("Remove");
+        jMenuEdit.add(jMenuItemRemove);
 
         jMenuBar1.add(jMenuEdit);
 
@@ -125,7 +119,6 @@ public class FormSupplyList extends javax.swing.JFrame {
 
         jMenuHelp.setText("Help");
 
-        jMenuItemAbout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/information_frame.png"))); // NOI18N
         jMenuItemAbout.setText("About");
         jMenuItemAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,7 +150,7 @@ public class FormSupplyList extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemQuitActionPerformed
 
     private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
-        JOptionPane.showMessageDialog(this, PropsUtil.getProperty("FormPriceList.About.text"), 
+        JOptionPane.showMessageDialog(this, PropsUtil.getProperty("FormSupplyList.About.text"),
                 PropsUtil.getProperty("jMenuItemAbout.text"), JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenuItemAboutActionPerformed
 
@@ -170,9 +163,9 @@ public class FormSupplyList extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuHelp;
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemAdd;
-    private javax.swing.JMenuItem jMenuItemDelete;
     private javax.swing.JMenuItem jMenuItemEdit;
     private javax.swing.JMenuItem jMenuItemQuit;
+    private javax.swing.JMenuItem jMenuItemRemove;
     private javax.swing.JMenuItem jMenuItemSaveAs;
     private javax.swing.JMenu jMenuView;
     private view.JPanelSupplyList jPanelSupplyList1;
@@ -198,7 +191,7 @@ public class FormSupplyList extends javax.swing.JFrame {
                    l.actionPerformed(null);
             }
         };
-        getJPanelPriceList().getTable().addMouseListener(buf);
+        getJPanelSupplyList().getTable().addMouseListener(buf);
         jMenuItemEdit.addActionListener(l);
     }
     public void removejMenuItemEditActionListener(ActionListener l)
@@ -208,21 +201,21 @@ public class FormSupplyList extends javax.swing.JFrame {
 
     public void addjMenuItemDeleteActionListener(ActionListener l)
     {
-        jMenuItemDelete.addActionListener(l);
+        jMenuItemRemove.addActionListener(l);
     }
     public void removejMenuItemDeleteActionListener(ActionListener l)
     {
-        jMenuItemDelete.removeActionListener(l);
+        jMenuItemRemove.removeActionListener(l);
     }
 
     /**
      * @return the jPanelSupplyList1.getJPanelSearch()
      */
-    public view.JPanelSearch getJPanelSearch() {
-        return jPanelSupplyList1.getJPanelSearch();
-    }
+//    public view.JPanelSearch getJPanelSearch() {
+//        return jPanelSupplyList1.getJPanelSearch();
+//    }
 
-    public view.JPanelSupplyList getJPanelPriceList() {
+    public view.JPanelSupplyList getJPanelSupplyList() {
         return jPanelSupplyList1;
     }
 
@@ -249,6 +242,19 @@ public class FormSupplyList extends javax.swing.JFrame {
     }
 
     private void loadTextProps() {
+        try {
+            this.setIconImage(ImageIO.read(new File(PropsUtil.getProperty("icon.hammer"))));
+        } catch (IOException ex) {
+            Logger.getLogger(FormSupplyList.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        jMenuItemAdd.setIcon(new ImageIcon(
+                getClass().getResource(PropsUtil.getProperty("icon.add"))));
+        jMenuItemEdit.setIcon(new ImageIcon(
+                getClass().getResource(PropsUtil.getProperty("icon.edit"))));
+        jMenuItemRemove.setIcon(new ImageIcon(
+                getClass().getResource(PropsUtil.getProperty("icon.remove"))));
+        jMenuItemAbout.setIcon(new ImageIcon(
+                getClass().getResource(PropsUtil.getProperty("icon.info"))));
         setTitle(PropsUtil.getProperty("FormSupplyList.title"));
         jMenuFile.setText(PropsUtil.getProperty("jMenuFile.text"));
         jMenuItemSaveAs.setText(PropsUtil.getProperty("jMenuItemSaveAs.text"));
