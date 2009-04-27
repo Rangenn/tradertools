@@ -35,6 +35,8 @@ public class Supply implements Serializable {
     @Basic(optional = false)
     @Column(name = "amount_min")
     private Integer amountMin;
+    @Column(name = "default_order_amount")
+    private Integer defaultOrderAmount;
     @Column(name = "prev_price")
     private BigDecimal prevPrice;
     @Basic(optional = false)
@@ -42,6 +44,11 @@ public class Supply implements Serializable {
     private BigDecimal actualPrice;
     @Column(name = "amount_left")
     private Integer amountLeft;
+    @Column(name = "image_link")
+    private String imageLink;
+    @Column(name = "description")
+    private String description;
+
     @JoinColumn(name = "seller_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Customer customer;
@@ -153,6 +160,48 @@ public class Supply implements Serializable {
     @Override
     public String toString() {
         return "entity.Supply[supplyPK=" + supplyPK + "]";
+    }
+
+    /**
+     * @return the defaultOrderAmount
+     */
+    public Integer getDefaultOrderAmount() {
+        return defaultOrderAmount;
+    }
+
+    /**
+     * @param defaultOrderAmount the defaultOrderAmount to set
+     */
+    public void setDefaultOrderAmount(Integer defaultOrderAmount) {
+        this.defaultOrderAmount = defaultOrderAmount;
+    }
+
+    /**
+     * @return the imageLink
+     */
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    /**
+     * @param imageLink the imageLink to set
+     */
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

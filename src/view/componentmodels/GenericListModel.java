@@ -5,7 +5,6 @@
 
 package view.componentmodels;
 
-import entity.Category;
 import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
@@ -14,12 +13,12 @@ import javax.swing.ComboBoxModel;
  *
  * @author е
  */
-public class CMCategory extends AbstractListModel implements ComboBoxModel {
+public class GenericListModel<T> extends AbstractListModel implements ComboBoxModel {
 
-    private List<Category> data;
-    private Category SelectedItem;
+    private List<T> data;
+    private T SelectedItem;
 
-    public CMCategory(List<Category> list) {
+    public GenericListModel(List<T> list) {
         data = list;
     }
 
@@ -33,9 +32,9 @@ public class CMCategory extends AbstractListModel implements ComboBoxModel {
 
     public void setSelectedItem(Object anItem) {
         if (data.size() != 0 && anItem != null) {
-            Category buf = (Category)anItem;
-            for (Category m : data)
-                if (buf.getId() == m.getId()){
+            T buf = (T)anItem;
+            for (T m : data)
+                if (buf.equals(m)){
                     SelectedItem = m;
                     return;
                 }
@@ -48,3 +47,4 @@ public class CMCategory extends AbstractListModel implements ComboBoxModel {
     }
 
 }
+

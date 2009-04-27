@@ -37,9 +37,6 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+EQUALS"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/view/icons/notebook__plus.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Add"/>
               </Properties>
             </MenuItem>
@@ -48,21 +45,15 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+ENTER"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/view/icons/notebook__pencil.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Edit"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemDelete">
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemRemove">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="DELETE"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/view/icons/notebook__minus.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Delete"/>
+                <Property name="text" type="java.lang.String" value="Remove"/>
               </Properties>
             </MenuItem>
           </SubComponents>
@@ -79,9 +70,6 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemAbout">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/view/icons/information_frame.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="About"/>
               </Properties>
               <Events>

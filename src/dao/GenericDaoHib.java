@@ -49,11 +49,17 @@ public class GenericDaoHib <T, PK extends Serializable>
 //    }
 
     public List<T> getList(){
-        Transaction t = HibUtil.getSession().beginTransaction();
+//        Transaction t = HibUtil.getSession().beginTransaction();
         List<T> res = HibUtil.getSession().createCriteria(type).list();
-        t.commit();
+//        t.commit();
         return res;
-     }
+    }
 
+    /**
+     * Проверяет строку
+     */
+    public static boolean badString(String str) {
+        return (str == null || str.equals(""));
+    }
 }
 

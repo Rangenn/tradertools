@@ -11,11 +11,15 @@
 
 package view;
 
+import entity.Customer;
+
 /**
  *
  * @author е
  */
 public class JPanelCustomerFullInfo extends javax.swing.JPanel {
+
+    private Customer data;
 
     /** Creates new form JPanelCustomerFullInfo */
     public JPanelCustomerFullInfo() {
@@ -33,34 +37,35 @@ public class JPanelCustomerFullInfo extends javax.swing.JPanel {
 
         jLabelTitle = new javax.swing.JLabel();
         jLabelAddress = new javax.swing.JLabel();
-        jLabelITX = new javax.swing.JLabel();
-        jLabelComment = new javax.swing.JLabel();
-        jTextFieldComment = new javax.swing.JTextField();
+        jLabelITN = new javax.swing.JLabel();
+        jLabelEmail = new javax.swing.JLabel();
+        jTextFieldEmail = new javax.swing.JTextField();
         jLabelPhone = new javax.swing.JLabel();
         jTextFieldPhone = new javax.swing.JTextField();
-        jTextFieldITX = new javax.swing.JTextField();
+        jTextFieldITN = new javax.swing.JTextField();
         jTextFieldAddress = new javax.swing.JTextField();
         jTextFieldTitle = new javax.swing.JTextField();
         jLabelAccount = new javax.swing.JLabel();
         jTextFieldAccount = new javax.swing.JTextField();
+        jLabelComment = new javax.swing.JLabel();
+        jTextFieldComment = new javax.swing.JTextField();
 
         jLabelTitle.setText("Название:");
 
         jLabelAddress.setText("Адрес:");
 
-        jLabelITX.setText("ИНН:");
+        jLabelITN.setText("ИНН:");
 
-        jLabelComment.setText("Комментарий:");
+        jLabelEmail.setText("E-mail:");
 
-        jTextFieldComment.setText("берет на реализацию");
+        jTextFieldEmail.setText("ivanov@mail.ru");
 
         jLabelPhone.setText("Телефон:");
 
         jTextFieldPhone.setText("89201234455");
 
-        jTextFieldITX.setText("3332224445/123123123");
+        jTextFieldITN.setText("3332224445/123123123");
 
-        jTextFieldAddress.setEditable(false);
         jTextFieldAddress.setText("г.Россошь");
 
         jTextFieldTitle.setText("ИП Иванов");
@@ -69,55 +74,67 @@ public class JPanelCustomerFullInfo extends javax.swing.JPanel {
 
         jTextFieldAccount.setText("р/с № 12312312300000001123 в Сбербанк России г.Москва");
 
+        jLabelComment.setText("Комментарий:");
+
+        jTextFieldComment.setText("Без комментариев!");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabelAccount)
-                    .addComponent(jLabelComment, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                    .addComponent(jLabelITX, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                    .addComponent(jLabelAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                    .addComponent(jLabelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE))
+                    .addComponent(jLabelEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelITN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelComment))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextFieldComment, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-                    .addComponent(jTextFieldAccount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-                    .addComponent(jTextFieldAddress, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+                    .addComponent(jTextFieldComment, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
+                    .addComponent(jTextFieldEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
+                    .addComponent(jTextFieldAccount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
+                    .addComponent(jTextFieldAddress, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextFieldITX, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+                        .addComponent(jTextFieldITN, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextFieldTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)))
+                        .addComponent(jLabelPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelTitle)
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabelAddress)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabelITN)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabelAccount)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabelEmail))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextFieldTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                            .addComponent(jTextFieldITN, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelPhone)
+                            .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelAddress))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldITX, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelPhone)
-                    .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelITX))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelAccount))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldComment, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelComment))
-                .addContainerGap())
+                    .addComponent(jTextFieldComment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelComment)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -126,15 +143,41 @@ public class JPanelCustomerFullInfo extends javax.swing.JPanel {
     private javax.swing.JLabel jLabelAccount;
     private javax.swing.JLabel jLabelAddress;
     private javax.swing.JLabel jLabelComment;
-    private javax.swing.JLabel jLabelITX;
+    private javax.swing.JLabel jLabelEmail;
+    private javax.swing.JLabel jLabelITN;
     private javax.swing.JLabel jLabelPhone;
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JTextField jTextFieldAccount;
     private javax.swing.JTextField jTextFieldAddress;
     private javax.swing.JTextField jTextFieldComment;
-    private javax.swing.JTextField jTextFieldITX;
+    private javax.swing.JTextField jTextFieldEmail;
+    private javax.swing.JTextField jTextFieldITN;
     private javax.swing.JTextField jTextFieldPhone;
     private javax.swing.JTextField jTextFieldTitle;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * @return the data
+     */
+    public Customer getData() {
+        return data;
+    }
+
+    /**
+     * @param data the data to set
+     */
+    public void setData(Customer data) {
+        this.data = data;
+        updateFields();
+    }
+
+    protected void updateFields() {
+        jTextFieldAccount.setText(data.getAccount());
+        jTextFieldAddress.setText(data.getAddress());
+        jTextFieldEmail.setText(data.getEmail());
+        jTextFieldITN.setText(data.getItn());
+        jTextFieldPhone.setText(data.getPhone());
+        jTextFieldTitle.setText(data.getTitle());
+        jTextFieldComment.setText(data.getCommentary());
+    }
 }

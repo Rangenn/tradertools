@@ -4,7 +4,7 @@
  */
 
 /*
- * FormAuthorizathion.java
+ * FormAuthorization.java
  *
  * Created on 28.03.2009, 12:21:57
  */
@@ -17,10 +17,10 @@ import util.PropsUtil;
  *
  * @author е
  */
-public class FormAuthorizathion extends javax.swing.JFrame {
+public class FormAuthorization extends javax.swing.JFrame {
 
-    /** Creates new form FormAuthorizathion */
-    public FormAuthorizathion() {
+    /** Creates new form FormAuthorization */
+    public FormAuthorization() {
         initComponents();
         loadTextProps();
     }
@@ -38,20 +38,16 @@ public class FormAuthorizathion extends javax.swing.JFrame {
         jTextFieldUserName = new javax.swing.JTextField();
         jLabelUserName = new javax.swing.JLabel();
         jLabelPassword = new javax.swing.JLabel();
-        jButtonOk = new javax.swing.JButton();
-        jButtonCancel = new javax.swing.JButton();
         jButtonHelp = new javax.swing.JButton();
+        jPanelOkCancel1 = new view.JPanelOkCancel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabelUserName.setText("Username");
+        jLabelUserName.setText("Username:");
 
-        jLabelPassword.setText("Password");
+        jLabelPassword.setText("Password:");
 
-        jButtonOk.setText("OK");
-
-        jButtonCancel.setText("Cancel");
-
+        jButtonHelp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/icons/question_frame.png"))); // NOI18N
         jButtonHelp.setText("Help");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -66,16 +62,14 @@ public class FormAuthorizathion extends javax.swing.JFrame {
                             .addComponent(jLabelUserName)
                             .addComponent(jLabelPassword))
                         .addGap(34, 34, 34)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPasswordField)
-                            .addComponent(jTextFieldUserName, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldUserName, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                            .addComponent(jPasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jButtonHelp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                        .addComponent(jButtonOk)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonCancel)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                        .addComponent(jPanelOkCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -88,43 +82,35 @@ public class FormAuthorizathion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelPassword))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonCancel)
-                    .addComponent(jButtonOk)
-                    .addComponent(jButtonHelp))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonHelp)
+                    .addComponent(jPanelOkCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FormAuthorizathion().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonHelp;
-    private javax.swing.JButton jButtonOk;
     private javax.swing.JLabel jLabelPassword;
     private javax.swing.JLabel jLabelUserName;
+    private view.JPanelOkCancel jPanelOkCancel1;
     private javax.swing.JPasswordField jPasswordField;
     private javax.swing.JTextField jTextFieldUserName;
     // End of variables declaration//GEN-END:variables
 
     private void loadTextProps() {
-        jButtonOk.setText(PropsUtil.getProperty("jButtonOk.text"));
-        jButtonCancel.setText(PropsUtil.getProperty("jButtonCancel.text"));
         jButtonHelp.setText(PropsUtil.getProperty("jButtonHelp.text"));
         jLabelUserName.setText(PropsUtil.getProperty("FormAuthorizathion.jLabelUserName.text"));
         jLabelPassword.setText(PropsUtil.getProperty("FormAuthorizathion.jLabelPassword.text"));
+    }
+
+    /**
+     * @return the jPanelOkCancel1
+     */
+    public view.JPanelOkCancel getJPanelOkCancel() {
+        return jPanelOkCancel1;
     }
 }
