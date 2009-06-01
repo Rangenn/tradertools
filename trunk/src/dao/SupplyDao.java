@@ -39,13 +39,13 @@ public class SupplyDao extends GenericDaoHib<Supply, SupplyPK> {
         return res;
      }
 
-    public Supply create(SupplyPK pk, int amount_min, BigDecimal actual_price) throws DaoException {
+    public Supply create(SupplyPK pk, BigDecimal actual_price) throws DaoException {
         if (pk == null || actual_price == null) return null;
         Supply res = (Supply) this.read(pk);
         if (res != null)
              throw new DaoException(PropsUtil.getProperty("DaoException.ObjectExists"));
-        res = new Supply(pk, amount_min, actual_price);
-
+        res = new Supply(pk, 0, actual_price);
+//        res.setPrice(actual_price);
 //        res.setTitleAlias(title_alias);
 //        res.setAmountLeft(amount_left);
         res.setProduct((Product) DaoFactory.getProductDao().read(pk.getProductId()));
@@ -79,10 +79,10 @@ public class SupplyDao extends GenericDaoHib<Supply, SupplyPK> {
 //                actual_price);
 //    }
 
-    public static SupplyPK createPK(String customertitle, String producttitle) throws DaoException {
-        Customer cust = DaoFactory.getCustomerDao().get(customertitle);
-        if (cust == null)
-            throw new DaoException(PropsUtil.getProperty("DaoException.ObjectNotFound"));
+    public static SupplyPK createPK(Customer cust, String producttitle) throws DaoException {
+//        Customer cust = DaoFactory.getCustomerDao().get(customertitle);
+//        if (cust == null)
+//            throw new DaoException(PropsUtil.getProperty("DaoException.ObjectNotFound"));
         Product pr = null;
         try {
                 pr = DaoFactory.getProductDao().create(producttitle);
@@ -95,12 +95,11 @@ public class SupplyDao extends GenericDaoHib<Supply, SupplyPK> {
     }
 
    public void update(Supply s,  String title_alias, int amount_min, int amount_left,
-            BigDecimal prev_price, BigDecimal actual_price){
+            BigDecimal actual_price){
         s.setTitleAlias(title_alias);
         s.setAmountMin(amount_min);
         s.setAmountLeft(amount_left);
-        s.setPrevPrice(prev_price);
-        s.setActualPrice(actual_price);
+        s.setPrice(actual_price);
         this.update(s);
     }
 

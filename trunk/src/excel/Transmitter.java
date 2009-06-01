@@ -18,7 +18,9 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
  */
 public class Transmitter {
 
-    //экспорт строковых данных в Excel-книгу, на 1й лист
+    /**
+     * экспорт строковых данных в Excel-книгу, на 1й лист
+     */
     public void Export(String filename, String[][] data) throws IOException{
         //POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(filename));
         HSSFWorkbook wb = new HSSFWorkbook();
@@ -38,7 +40,9 @@ public class Transmitter {
 
     }
 
-    //импорт строковых данных из excel-книги, 1го листа
+    /**
+     * импорт всех строковых данных из excel-книги, 1го листа
+     */
     public String[][] Import(String filename) throws IOException{
         String[][] res;
         POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(filename));

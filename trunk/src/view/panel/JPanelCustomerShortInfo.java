@@ -9,13 +9,18 @@
  * Created on 30.03.2009, 0:51:59
  */
 
-package view;
+package view.panel;
+
+import entity.Customer;
 
 /**
  *
  * @author е
  */
-public class JPanelCustomerShortInfo extends javax.swing.JPanel {
+public class JPanelCustomerShortInfo extends javax.swing.JPanel implements IEntityView<Customer>{
+
+    protected Customer data;
+    protected boolean Editable;
 
     /** Creates new form JPanelCustomerShortInfo */
     public JPanelCustomerShortInfo() {
@@ -36,37 +41,33 @@ public class JPanelCustomerShortInfo extends javax.swing.JPanel {
         jLabelAccount = new javax.swing.JLabel();
         jTextFieldAccount = new javax.swing.JTextField();
 
-        jTextFieldTitle.setText("ИП Иванов");
-
         jLabelTitle.setText("Название:");
 
         jLabelAccount.setText("Расчетный счет:");
-
-        jTextFieldAccount.setText("р/с № 12312312300000001123 в Сбербанк России г.Москва");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-                    .addComponent(jLabelAccount))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextFieldAccount, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
-                    .addComponent(jTextFieldTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)))
+                    .addComponent(jTextFieldAccount, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+                    .addComponent(jTextFieldTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                    .addComponent(jLabelTitle)
+                    .addComponent(jTextFieldTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelAccount)))
+                    .addComponent(jLabelAccount)
+                    .addComponent(jTextFieldAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -77,5 +78,36 @@ public class JPanelCustomerShortInfo extends javax.swing.JPanel {
     private javax.swing.JTextField jTextFieldAccount;
     private javax.swing.JTextField jTextFieldTitle;
     // End of variables declaration//GEN-END:variables
+
+    // <editor-fold defaultstate="collapsed" desc="Properties">
+    public boolean isEditable() {
+        return Editable;
+    }
+
+    public void setEditable(boolean Editable) {
+        this.Editable = Editable;
+        jTextFieldAccount.setEditable(Editable);
+        jTextFieldTitle.setEditable(Editable);
+    }
+    
+    public Customer getData() {
+        return data;
+    }
+
+    public void setData(Customer data) {
+        this.data = data;
+        updateDisplay();
+    }
+    // </editor-fold>
+
+    public void clearData() {
+        Customer c = new Customer();
+        setData(c);
+    }
+
+    public void updateDisplay() {
+        jTextFieldAccount.setText(data.getAccount());
+        jTextFieldTitle.setText(data.getTitle());
+    }
 
 }

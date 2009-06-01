@@ -11,6 +11,7 @@
 
 package view;
 
+import controller.CustomerManagingTool;
 import dao.DaoFactory;
 import entity.Bill;
 import entity.Customer;
@@ -28,10 +29,12 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import util.ConvertUtil;
 import util.PropsUtil;
-import view.componentmodels.GenericListModel;
+import view.componentmodel.GenericListModel;
 
 /**
  *
@@ -40,20 +43,34 @@ import view.componentmodels.GenericListModel;
 public class FormCustomerManager extends javax.swing.JFrame {
 
     Customer MySelf;
+
+    private final int mode;
     /** Creates new form FormCustomerManager */
-    public FormCustomerManager(Customer myself, List<Customer> list, final boolean showSuppliers) {//true - show Suppliers, false - show Clients
+    public FormCustomerManager(Customer myself, List<Customer> list, final int mode) {//show Suppliers or Clients
         initComponents();
         loadTextProps();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         MySelf = myself;
-        for(int i = 0; i < list.size(); i++) {
-            Customer c = list.get(i);
-            if (!c.getIsSupplier() == showSuppliers) {
-                list.remove(c);
-                i--;
+        this.mode = mode;
+        jPanelCustomerFullInfo1.setEditable(false);
+        boolean showSuppliers;
+        switch (mode) {
+            case CustomerManagingTool.MODE_SUPPLIERS: {
+                showSuppliers = true;
+                jButtonNewInvoice.setText("Импорт счета");
+                ((TitledBorder)jListCustomers.getBorder()).setTitle("Поставщики");
+                break;
             }
-        }        
+            case CustomerManagingTool.MODE_CLIENTS: { 
+                showSuppliers = false;
+                ((TitledBorder)jListCustomers.getBorder()).setTitle("Клиенты");
+                jButtonNewRequest.setText("Импорт заказа");
+                break;
+            }
+            default: { showSuppliers = false; }
+        }
+        //jButtonNewRequest.setEnabled(showSuppliers);
         jListCustomers.setModel(new GenericListModel(list));
         
         ListSelectionListener sl = new ListSelectionListener() {
@@ -64,7 +81,7 @@ public class FormCustomerManager extends javax.swing.JFrame {
                 BigDecimal Balance = new BigDecimal(0.00);
                 List<Invoice> invoices = null;
                 List<Bill> bills = null;
-                if (showSuppliers) {
+                if (mode == CustomerManagingTool.MODE_SUPPLIERS) {
                     invoices = DaoFactory.getInvoiceDao().getList(buf, MySelf); //мы получили от поставщика
                     bills = DaoFactory.getBillDao().getList(buf, MySelf);//мы заплатили поставщикам                    
                 } else {
@@ -100,7 +117,7 @@ public class FormCustomerManager extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanelCustomerFullInfo1 = new view.JPanelCustomerFullInfo();
+        jPanelCustomerFullInfo1 = new view.panel.JPanelCustomerFullInfo();
         jPanelAddEditRemove1 = new view.JPanelAddEditRemove();
         jPanelSearch1 = new view.JPanelSearch();
         jSeparator1 = new javax.swing.JSeparator();
@@ -231,35 +248,31 @@ public class FormCustomerManager extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanelAddEditRemove1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanelSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addGap(10, 10, 10)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanelSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelBalance)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelBalance)
+                            .addComponent(jButtonNewInvoice)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonNewBill)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonNewInvoice)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonNewBill))
-                                .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButtonNewRequest)
-                                        .addGap(61, 61, 61))
-                                    .addComponent(jScrollPane4, 0, 0, Short.MAX_VALUE))))
-                        .addContainerGap())
-                    .addComponent(jPanelCustomerFullInfo1, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)))
+                                .addComponent(jButtonNewRequest)
+                                .addGap(61, 61, 61))
+                            .addComponent(jScrollPane4, 0, 0, Short.MAX_VALUE)))
+                    .addComponent(jPanelCustomerFullInfo1, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -277,8 +290,8 @@ public class FormCustomerManager extends javax.swing.JFrame {
                         .addComponent(jPanelCustomerFullInfo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -324,7 +337,7 @@ public class FormCustomerManager extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemRemove;
     private javax.swing.JMenuItem jMenuItemSupplyList;
     private view.JPanelAddEditRemove jPanelAddEditRemove1;
-    private view.JPanelCustomerFullInfo jPanelCustomerFullInfo1;
+    private view.panel.JPanelCustomerFullInfo jPanelCustomerFullInfo1;
     private view.JPanelSearch jPanelSearch1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -333,6 +346,39 @@ public class FormCustomerManager extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 
+    // <editor-fold defaultstate="collapsed" desc="ActionListeners">
+    public void addjButtonNewInvoiceActionListener(ActionListener l)
+    {
+        jButtonNewInvoice.addActionListener(l);
+    }
+    public void removejButtonNewInvoiceActionListener(ActionListener l)
+    {
+        jButtonNewInvoice.removeActionListener(l);
+    }
+
+    public void addjButtonNewRequestActionListener(ActionListener l)
+    {
+        jButtonNewRequest.addActionListener(l);
+    }
+    public void removejButtonNewRequestActionListener(ActionListener l)
+    {
+        jButtonNewRequest.removeActionListener(l);
+    }
+
+    public void addjButtonNewBillActionListener(ActionListener l)
+    {
+        jButtonNewBill.addActionListener(l);
+    }
+    public void removejButtonNewBillActionListener(ActionListener l)
+    {
+        jButtonNewBill.removeActionListener(l);
+    }
+
+    public void addDoubleClickOnjListInvoicesListener(ActionListener l)
+    {
+        jListInvoices.addMouseListener(ConvertUtil.convert(l));
+    }
+    // </editor-fold> 
     private void loadTextProps() {
         setTitle(PropsUtil.getProperty("FormCustomerManager.title"));
         jMenuFile.setText(PropsUtil.getProperty("jMenuFile.text"));
@@ -356,4 +402,31 @@ public class FormCustomerManager extends javax.swing.JFrame {
         jMenuItemAbout.setIcon(new ImageIcon(
                 getClass().getResource(PropsUtil.getProperty("icon.info"))));
     }
+
+    public Customer getSelectedCustomer() {
+        return (Customer) jListCustomers.getSelectedValue();
+    }
+
+    public Invoice getSelectedInvoice() {
+        return (Invoice) jListInvoices.getSelectedValue();
+    }
+
+    public Bill getSelectedBill() {
+        return (Bill) jListBills.getSelectedValue();
+    }
+
+    public void updateDisplay() {
+        //TODO: не обновляется jListCustomers, т.к. не обновляется его model
+        if (jListCustomers.getSelectedIndex() < 0)
+            jListCustomers.setSelectedIndex(jListCustomers.getFirstVisibleIndex());//?!
+        jListCustomers.updateUI();
+        jListBills.updateUI();
+        jListInvoices.updateUI();
+        jListRequests.updateUI();
+    }
+
+    public JPanelAddEditRemove getJPanelAddEditRemove() {
+        return jPanelAddEditRemove1;
+    }
+
 }

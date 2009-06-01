@@ -111,45 +111,38 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jPanelAddEditRemove1" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" alignment="0" pref="180" max="32767" attributes="2"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jPanelSearch1" min="-2" pref="131" max="-2" attributes="1"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jScrollPane1" alignment="0" pref="180" max="32767" attributes="1"/>
+                  <Component id="jPanelSearch1" alignment="0" min="-2" pref="148" max="-2" attributes="1"/>
               </Group>
-              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-              <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" attributes="0">
+              <Component id="jSeparator1" min="-2" pref="14" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabelBalance" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabelBalance" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jButtonNewInvoice" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jScrollPane3" min="-2" pref="167" max="-2" attributes="2"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jScrollPane2" min="-2" pref="147" max="-2" attributes="2"/>
-                                  <Component id="jButtonNewBill" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="jButtonNewRequest" min="-2" max="-2" attributes="1"/>
-                                      <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="jScrollPane4" min="0" pref="0" max="32767" attributes="2"/>
-                              </Group>
-                          </Group>
+                          <Component id="jButtonNewInvoice" min="-2" max="-2" attributes="0"/>
+                          <Component id="jScrollPane3" min="-2" pref="167" max="-2" attributes="2"/>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jButtonNewBill" min="-2" max="-2" attributes="0"/>
+                          <Component id="jScrollPane2" min="-2" pref="161" max="-2" attributes="2"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jButtonNewRequest" min="-2" max="-2" attributes="1"/>
+                              <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jScrollPane4" min="0" pref="0" max="32767" attributes="2"/>
+                      </Group>
                   </Group>
-                  <Component id="jPanelCustomerFullInfo1" pref="532" max="32767" attributes="0"/>
+                  <Component id="jPanelCustomerFullInfo1" pref="522" max="32767" attributes="0"/>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -170,8 +163,8 @@
                       <Component id="jPanelCustomerFullInfo1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jScrollPane2" pref="290" max="32767" attributes="2"/>
                           <Component id="jScrollPane4" alignment="0" pref="290" max="32767" attributes="2"/>
-                          <Component id="jScrollPane2" alignment="1" pref="290" max="32767" attributes="2"/>
                           <Component id="jScrollPane3" pref="290" max="32767" attributes="2"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -190,7 +183,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="view.JPanelCustomerFullInfo" name="jPanelCustomerFullInfo1">
+    <Component class="view.panel.JPanelCustomerFullInfo" name="jPanelCustomerFullInfo1">
       <Properties>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
