@@ -44,7 +44,11 @@ public class FormGenericItemEditor extends javax.swing.JFrame {
     /** Creates new form FormGenericItemEditor */
     public FormGenericItemEditor(int TextFieldsCount, int ComboBoxesCount) {
         super();
-        initComponents();        
+        initComponents();
+        Dimension d = new Dimension(this.getWidth(), TextFieldsCount*(45 + GAP*2) + GAP*2);
+        //this.setPreferredSize(d);
+        //setMaximumSize(d);
+        setMinimumSize(d);
         TextFields = new ArrayList<JTextField>();
         ComboBoxes = new ArrayList<JComboBox>();
         JComponent c = null;

@@ -16,6 +16,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -63,12 +64,18 @@ public class Customer implements Serializable {
     private List<Bill> billsMakedOutCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "receiver", fetch = FetchType.LAZY)
     private List<Bill> billsReceivedCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sender", fetch = FetchType.LAZY)
+    private List<Request> requestsMakedOutCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "receiver", fetch = FetchType.LAZY)
+    private List<Request> requestsReceivedCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer", fetch = FetchType.LAZY)
     private List<Invoice> invoicesReceivedCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "seller", fetch = FetchType.LAZY)
     private List<Invoice> invoicesMakedOutCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Supply> supplyCollection;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     public Customer() {
     }
@@ -108,7 +115,7 @@ public class Customer implements Serializable {
         this.title = title;
     }
 
-    public boolean getIsSupplier() {
+    public boolean IsSupplier() {
         return isSupplier;
     }
 
@@ -227,6 +234,48 @@ public class Customer implements Serializable {
     @Override
     public String toString() {
         return getTitle();
+    }
+
+    /**
+     * @return the requestsMakedOutCollection
+     */
+    public List<Request> getRequestsMakedOutCollection() {
+        return requestsMakedOutCollection;
+    }
+
+    /**
+     * @param requestsMakedOutCollection the requestsMakedOutCollection to set
+     */
+    public void setRequestsMakedOutCollection(List<Request> requestsMakedOutCollection) {
+        this.requestsMakedOutCollection = requestsMakedOutCollection;
+    }
+
+    /**
+     * @return the requestsReceivedCollection
+     */
+    public List<Request> getRequestsReceivedCollection() {
+        return requestsReceivedCollection;
+    }
+
+    /**
+     * @param requestsReceivedCollection the requestsReceivedCollection to set
+     */
+    public void setRequestsReceivedCollection(List<Request> requestsReceivedCollection) {
+        this.requestsReceivedCollection = requestsReceivedCollection;
+    }
+
+    /**
+     * @return the user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

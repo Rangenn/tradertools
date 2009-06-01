@@ -7,7 +7,9 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -16,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -25,7 +28,15 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "supply")
-@NamedQueries({@NamedQuery(name = "Supply.findAll", query = "SELECT s FROM Supply s")})
+@NamedQueries({
+@NamedQuery(name = "Supply.findAll", 
+         query = "SELECT s FROM Supply s")
+//,@NamedQuery(name = "Supply.getPrice",
+//         query = "SELECT sch.price FROM SupplyChange sch " +
+//         "WHERE sch.id = :id " +
+//         "AND sch.ToDate IS NULL " +
+//         "AND sch.FromDate = (SELECT MAX(FromDate) FROM SupplyChange WHERE id = :id)")
+})
 public class Supply implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -37,11 +48,12 @@ public class Supply implements Serializable {
     private Integer amountMin;
     @Column(name = "default_order_amount")
     private Integer defaultOrderAmount;
-    @Column(name = "prev_price")
-    private BigDecimal prevPrice;
+//    @Column(name = "prev_price")
+//    private BigDecimal prevPrice;
     @Basic(optional = false)
-    @Column(name = "actual_price")
-    private BigDecimal actualPrice;
+    @Column(name = "price")
+    private BigDecimal Price;
+    //@Basic(optional = false)
     @Column(name = "amount_left")
     private Integer amountLeft;
     @Column(name = "image_link")
@@ -55,6 +67,8 @@ public class Supply implements Serializable {
     @JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Product product;
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "supply", fetch = FetchType.LAZY)
+    //private List<Integer> supplyChangeCollection;//?!
 
     public Supply() {
     }
@@ -66,7 +80,7 @@ public class Supply implements Serializable {
     public Supply(SupplyPK supplyPK, int amountMin, BigDecimal actualPrice) {
         this.supplyPK = supplyPK;
         this.amountMin = amountMin;
-        this.actualPrice = actualPrice;
+        this.Price = actualPrice;
     }
 
     public Supply(int productId, int sellerId) {
@@ -97,20 +111,20 @@ public class Supply implements Serializable {
         this.amountMin = amountMin;
     }
 
-    public BigDecimal getPrevPrice() {
-        return prevPrice;
+//    public BigDecimal getPrevPrice() {
+//        return prevPrice;
+//    }
+//
+//    public void setPrevPrice(BigDecimal prevPrice) {
+//        this.prevPrice = prevPrice;
+//    }
+
+    public BigDecimal getPrice() {
+        return Price;
     }
 
-    public void setPrevPrice(BigDecimal prevPrice) {
-        this.prevPrice = prevPrice;
-    }
-
-    public BigDecimal getActualPrice() {
-        return actualPrice;
-    }
-
-    public void setActualPrice(BigDecimal actualPrice) {
-        this.actualPrice = actualPrice;
+    public void setPrice(BigDecimal actualPrice) {
+        this.Price = actualPrice;
     }
 
     public Integer getAmountLeft() {

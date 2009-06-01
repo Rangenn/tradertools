@@ -10,10 +10,12 @@ import dao.DaoFactory;
 import dao.SupplyDao;
 import entity.Category;
 import entity.Supply;
+import entity.SupplyPK;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -62,18 +64,20 @@ public class DataTransmitTool {
     public void TransmitPrices(){
         String filename = FTransmitter.getFileName();
         int mode = FTransmitter.getTransmitMode();
+        int DocType = FTransmitter.getDocumentType();
         switch (mode)
         {
-            case MODE_EXPORT: { ExportPrices(filename); break; }
-            case MODE_IMPORT: { ImportPrices(filename); break; }
+            case MODE_EXPORT: { ExportPriceList(filename); break; }
+            case MODE_IMPORT: { ImportPriceList(filename, DocType); break; }
         }
         
     }
 
-    public void ImportPrices(String filename){
+    public void ImportPriceList(String filename, int type){
         String[][] data = null;
-        //SupplyDao supplyDao = new SupplyDao();
         Exception e = null;
+        ArrayList errors = new ArrayList();
+        //импортируем весь документ
         try {
             data = new excel.Transmitter().Import(filename);
         } catch (IOException ex) {
@@ -87,43 +91,80 @@ public class DataTransmitTool {
         Category cat;
         Supply s;
         BigDecimal a;
-        for (int i = 0; i < data.length; i++) {
-//            Query =
-//                "INSERT INTO product (title, article) " +
-//                "VALUES ('" + data[i][0] + "','" + data[i][1] + "')";
-//            HibUtil.getSession().createSQLQuery(Query).executeUpdate();
-            try {
-                if (data[i].length < 4)
-                    category = null;
-                else category = data[i][3];
-                cat = DaoFactory.getCategoryDao().create(category);
-                //try {
-                //= (data[i][2] == null || data[i][2].equals("")) ? null :
-                a = new BigDecimal(data[i][2]);
-                //}
-                //catch (NumberFormatException ex) { a = null; }
-                s = DaoFactory.getSupplyDao().create(SupplyDao.createPK("Тихонов", data[i][0]),
-                         0,  a);
-                s.getProduct().setArticle(data[i][1]);
-                s.getProduct().setCategory(cat);
-                DaoFactory.getProductDao().update(s.getProduct());
-            }
-            catch (Exception ex){//test
-                ctr++;
-                e = ex;
-                //Logger.getLogger(DataTransmitTool.class.getName()).log(Level.SEVERE, null, ex);
+        //разбираем импортированные данные и добавляем в базу
+
+        if (type == 0) {
+            for (int i = 0; i < data.length; i++) {
+                try {
+                    if (data[i].length < 4)
+                        category = null;
+                    else category = data[i][3];
+                    cat = DaoFactory.getCategoryDao().create(category);
+                    //try {
+                    //= (data[i][2] == null || data[i][2].equals("")) ? null :
+                    a = new BigDecimal(data[i][2]);
+                    //}
+                    //catch (NumberFormatException ex) { a = null; }
+                    if (DaoFactory.getProductDao().exists(data[i][0])) {
+                        SupplyPK id = SupplyDao.createPK(
+                            DaoFactory.getCustomerDao().getMySelf(), data[i][0]);
+                        if (DaoFactory.getSupplyDao().exists(id)) {
+                            s = DaoFactory.getSupplyDao().read(id);
+                            if (a.equals(s.getPrice())) {
+                                s.setPrice(a);
+                                 DaoFactory.getSupplyDao().update(s);//обновление
+                            }
+                        }
+                        else s = DaoFactory.getSupplyDao().create(id, a);  //создание
+                        s.getProduct().setArticle(data[i][1]);
+                        s.getProduct().setCategory(cat);
+                        DaoFactory.getProductDao().update(s.getProduct());
+                    }
+                }
+                catch (Exception ex){
+                    ctr++;
+                    errors.add(i);
+                    e = ex;
+                    //Logger.getLogger(DataTransmitTool.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
-        System.out.println("ImportPrices result:\n");
+
+        else if (type == 1) {
+            for (int i = 8; i < data.length; i++) {
+                try {
+                    //try {
+                    //= (data[i][2] == null || data[i][2].equals("")) ? null :
+                    a = new BigDecimal(data[i][3]);
+                    //}
+                    //catch (NumberFormatException ex) { a = null; }
+                    s = DaoFactory.getSupplyDao().create(SupplyDao.createPK(
+                            DaoFactory.getCustomerDao().get("Ока-Серпухов"), data[i][0]), a);//?! хардкод
+                    s.setAmountLeft(Double.valueOf(data[i][4]).intValue());
+                    DaoFactory.getProductDao().update(s.getProduct());
+                }
+                catch (Exception ex){
+                    ctr++;
+                    e = ex;
+                    //Logger.getLogger(DataTransmitTool.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+
+        //выводим результаты импорта
+        System.out.println("ImportPriceList result:\n");
         System.out.println("Imported: " + String.valueOf(data.length - ctr) + '\n');
         System.out.println("Skipped with error: " + String.valueOf(ctr) + '\n');
+        System.out.println("Error strings: " + errors.toString());
         if (e != null) {
             System.out.println("Last error: ");
             e.printStackTrace();
+            System.out.println("Last error's end.");
         }
     }
 
-    public void ExportPrices(String filename){
+    public void ExportPriceList(String filename){
 
     }
 

@@ -44,6 +44,9 @@ public class GenericDaoHib <T, PK extends Serializable>
         t.commit();
     }
 
+    public boolean exists(PK id) {
+        return (read(id) != null);
+    }
 //    public void refresh(T o){
 //        HibUtil.getSession().refresh(o, LockMode.FORCE);
 //    }

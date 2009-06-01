@@ -18,10 +18,10 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanelSearch1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="300" max="32767" attributes="0"/>
+              <EmptySpace pref="347" max="32767" attributes="0"/>
               <Component id="jPanelAddEditRemove1" min="-2" max="-2" attributes="0"/>
           </Group>
-          <Component id="jScrollPaneSupplyList" alignment="0" pref="724" max="32767" attributes="0"/>
+          <Component id="jScrollPaneSupplyList" alignment="0" pref="728" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -55,8 +55,8 @@
                 <Column editable="false" title="&#x2116;" type="java.lang.Object"/>
                 <Column editable="false" title="&#x41d;&#x430;&#x438;&#x43c;&#x435;&#x43d;&#x43e;&#x432;&#x430;&#x43d;&#x438;&#x435;" type="java.lang.Object"/>
                 <Column editable="false" title="&#x410;&#x440;&#x442;&#x438;&#x43a;&#x443;&#x43b;" type="java.lang.Object"/>
-                <Column editable="true" title="&#x426;&#x435;&#x43d;&#x430;" type="java.lang.Object"/>
-                <Column editable="true" title="&#x41e;&#x441;&#x442;&#x430;&#x442;&#x43e;&#x43a;" type="java.lang.Object"/>
+                <Column editable="false" title="&#x426;&#x435;&#x43d;&#x430;" type="java.lang.Object"/>
+                <Column editable="false" title="&#x41e;&#x441;&#x442;&#x430;&#x442;&#x43e;&#x43a;" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="autoResizeMode" type="int" value="0"/>

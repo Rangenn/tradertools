@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -34,12 +35,7 @@ public class FormTransmitter extends javax.swing.JFrame {
 
     /** Creates new form FormTransmitter */
     public FormTransmitter() {
-        initComponents();
-        try {
-            this.setIconImage(ImageIO.read(new File("src/view/icons/hammer_screwdriver.png")));
-        } catch (IOException ex) {
-            Logger.getLogger(FormSupplyList.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        initComponents();        
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
         "Excel", "xls");
         jFileChooser1.setFileFilter(filter);        
@@ -78,14 +74,13 @@ public class FormTransmitter extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Transmitter");
 
-        jListTables.setBorder(javax.swing.BorderFactory.createTitledBorder("Table"));
+        jListTables.setBorder(javax.swing.BorderFactory.createTitledBorder("Тип документа"));
         jListTables.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Price" };
+            String[] strings = { "Прайс ИП Тихонов", "Прайс Серпухов", "Прайс Виллер", "Счет Виллер", "Счет Серпухов" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
         jListTables.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jListTables.setSelectedIndex(0);
         jScrollPane1.setViewportView(jListTables);
 
         jTextFieldFilePath.setBorder(javax.swing.BorderFactory.createTitledBorder("File Path"));
@@ -126,12 +121,10 @@ public class FormTransmitter extends javax.swing.JFrame {
         jMenuEdit.setText("Edit");
 
         jMenuItemUndo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/arrow_return_180_left.png"))); // NOI18N
         jMenuItemUndo.setText("Undo");
         jMenuEdit.add(jMenuItemUndo);
 
         jMenuItemRedo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/arrow_return.png"))); // NOI18N
         jMenuItemRedo.setText("Redo");
         jMenuEdit.add(jMenuItemRedo);
 
@@ -139,7 +132,6 @@ public class FormTransmitter extends javax.swing.JFrame {
 
         jMenuHelp.setText("Help");
 
-        jMenuItemAbout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/information_frame.png"))); // NOI18N
         jMenuItemAbout.setText("About");
         jMenuItemAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -252,6 +244,10 @@ public class FormTransmitter extends javax.swing.JFrame {
         else return DataTransmitTool.MODE_EXPORT;
     }
 
+    public int getDocumentType() {
+        return jListTables.getSelectedIndex();
+    }
+    
     private void loadTextProps() {
         jMenuFile.setText(PropsUtil.getProperty("jMenuFile.text"));
         jMenuItemSaveAs.setText(PropsUtil.getProperty("jMenuItemSaveAs.text"));
@@ -265,5 +261,17 @@ public class FormTransmitter extends javax.swing.JFrame {
         jRadioButtonExport.setText(PropsUtil.getProperty("FormTransmitter.jRadioButtonExport.text"));
         jRadioButtonImport.setText(PropsUtil.getProperty("FormTransmitter.jRadioButtonImport.text"));
         this.setTitle(PropsUtil.getProperty("FormTransmitter.title"));
+
+        jMenuItemUndo.setIcon(new ImageIcon(
+                getClass().getResource(PropsUtil.getProperty("icon.undo"))));
+        jMenuItemRedo.setIcon(new ImageIcon(
+                getClass().getResource(PropsUtil.getProperty("icon.redo"))));
+        jMenuItemAbout.setIcon(new ImageIcon(
+                getClass().getResource(PropsUtil.getProperty("icon.info"))));
+        try {
+            this.setIconImage(ImageIO.read(new File(PropsUtil.getProperty("icon.hammer"))));
+        } catch (IOException ex) {
+            Logger.getLogger(FormSupplyList.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -9,21 +9,92 @@
  * Created on 29.03.2009, 22:55:42
  */
 
-package view;
+package view.panel;
 
 import entity.Customer;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 /**
  *
  * @author е
  */
-public class JPanelCustomerFullInfo extends javax.swing.JPanel {
+public class JPanelCustomerFullInfo extends javax.swing.JPanel implements IEntityView<Customer> {
 
-    private Customer data;
+    protected Customer data;
+    protected boolean Editable;
 
     /** Creates new form JPanelCustomerFullInfo */
     public JPanelCustomerFullInfo() {
         initComponents();
+        clearData();
+
+        FocusListener fl;
+        fl = new FocusAdapter() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                data.setTitle(((javax.swing.JTextField)e.getSource()).getText());
+            }
+        };
+        jTextFieldTitle.addFocusListener(fl); //название
+
+        fl = new FocusAdapter() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                data.setAddress(((javax.swing.JTextField)e.getSource()).getText());
+            }
+        };
+        jTextFieldAddress.addFocusListener(fl); //адрес
+
+        fl = new FocusAdapter() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                data.setItn(((javax.swing.JTextField)e.getSource()).getText());
+            }
+        };
+        jTextFieldITN.addFocusListener(fl); //ИНН
+
+        fl = new FocusAdapter() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                data.setPhone(((javax.swing.JTextField)e.getSource()).getText());
+            }
+        };
+        jTextFieldPhone.addFocusListener(fl); //телефон
+
+        fl = new FocusAdapter() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                data.setAccount(((javax.swing.JTextField)e.getSource()).getText());
+            }
+        };
+        jTextFieldAccount.addFocusListener(fl); //р/сч
+
+        fl = new FocusAdapter() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                data.setEmail(((javax.swing.JTextField)e.getSource()).getText());
+            }
+        };
+        jTextFieldEmail.addFocusListener(fl); //E-mail
+
+        fl = new FocusAdapter() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                data.setCommentary(((javax.swing.JTextField)e.getSource()).getText());
+            }
+        };
+        jTextFieldComment.addFocusListener(fl); //комментарий
+
+
     }
 
     /** This method is called from within the constructor to
@@ -156,22 +227,38 @@ public class JPanelCustomerFullInfo extends javax.swing.JPanel {
     private javax.swing.JTextField jTextFieldTitle;
     // End of variables declaration//GEN-END:variables
 
-    /**
-     * @return the data
-     */
+    // <editor-fold defaultstate="collapsed" desc="Properties">
+    public boolean isEditable() {
+        return Editable;
+    }
+
+    public void setEditable(boolean Editable) {
+        this.Editable = Editable;
+        jTextFieldAccount.setEditable(Editable);
+        jTextFieldAddress.setEditable(Editable);
+        jTextFieldEmail.setEditable(Editable);
+        jTextFieldITN.setEditable(Editable);
+        jTextFieldPhone.setEditable(Editable);
+        jTextFieldTitle.setEditable(Editable);
+        jTextFieldComment.setEditable(Editable);
+    }
+
     public Customer getData() {
         return data;
     }
 
-    /**
-     * @param data the data to set
-     */
     public void setData(Customer data) {
         this.data = data;
-        updateFields();
+        updateDisplay();
+    }
+    // </editor-fold>
+
+    public void clearData() {
+        Customer c = new Customer();
+        setData(c);
     }
 
-    protected void updateFields() {
+    public void updateDisplay() {
         jTextFieldAccount.setText(data.getAccount());
         jTextFieldAddress.setText(data.getAddress());
         jTextFieldEmail.setText(data.getEmail());

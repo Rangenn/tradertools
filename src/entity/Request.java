@@ -8,20 +8,19 @@ package entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
-import java.text.spi.DateFormatProvider;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,53 +29,49 @@ import javax.persistence.TemporalType;
  *
  * @author е
  */
-@SequenceGenerator(
-    name="SEQ_GEN",
-    sequenceName="bill_id_seq",
-    allocationSize=1
-)
 @Entity
-@Table(name = "bill")
-@NamedQueries({@NamedQuery(name = "Bill.findAll", query = "SELECT b FROM Bill b"),
-@NamedQuery(name = "Bill.findByReceiverIdSenderId", query = "SELECT i FROM Bill i" +
+@Table(name = "request")
+@NamedQueries({@NamedQuery(name = "Request.findAll", query = "SELECT r FROM Request r"),
+@NamedQuery(name = "Request.findByReceiverIdSenderId", query = "SELECT i FROM Bill i" +
 " WHERE i.sender = :SenderId AND i.receiver = :ReceiverId")})
-public class Bill implements Serializable {
+public class Request implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_GEN")
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @Column(name = "bill_sum")
-    private BigDecimal billSum;
     @Basic(optional = false)
     @Column(name = "creation_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @Column(name = "purpose")
-    private String purpose;
-    @JoinColumn(name = "sender_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Customer sender;
+    @Basic(optional = false)
+    @Column(name = "approved")
+    private boolean approved;
     @JoinColumn(name = "receiver_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Customer receiver;
+    @JoinColumn(name = "sender_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Customer sender;
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Employee employee;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "request", fetch = FetchType.LAZY)
+    private List<RequestProduct> requestProductCollection;
 
-    public Bill() {
+    private BigDecimal requestSum;
+
+    public Request() {
     }
 
-//    public Bill(Integer id) {
-//        this.id = id;
-//    }
-
-    public Bill(Integer id, BigDecimal sum, Date creationDate) {
+    public Request(Integer id) {
         this.id = id;
-        this.billSum = sum;
+    }
+
+    public Request(Integer id, Date creationDate, boolean approved) {
+        this.id = id;
         this.creationDate = creationDate;
+        this.approved = approved;
     }
 
     public Integer getId() {
@@ -87,14 +82,6 @@ public class Bill implements Serializable {
         this.id = id;
     }
 
-    public BigDecimal getBillSum() {
-        return billSum;
-    }
-
-    public void setBillSum(BigDecimal money) {
-        this.billSum = money;
-    }
-
     public Date getCreationDate() {
         return creationDate;
     }
@@ -103,12 +90,20 @@ public class Bill implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public String getPurpose() {
-        return purpose;
+    public boolean getApproved() {
+        return approved;
     }
 
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    public Customer getReceiverId() {
+        return receiver;
+    }
+
+    public void setReceiverId(Customer receiverId) {
+        this.receiver = receiverId;
     }
 
     public Customer getSenderId() {
@@ -119,12 +114,20 @@ public class Bill implements Serializable {
         this.sender = senderId;
     }
 
-    public Customer getReceiverId() {
-        return receiver;
+    public Employee getEmployeeId() {
+        return employee;
     }
 
-    public void setReceiverId(Customer receiverId) {
-        this.receiver = receiverId;
+    public void setEmployeeId(Employee employeeId) {
+        this.employee = employeeId;
+    }
+
+    public List<RequestProduct> getRequestProductCollection() {
+        return requestProductCollection;
+    }
+
+    public void setRequestProductCollection(List<RequestProduct> requestProductCollection) {
+        this.requestProductCollection = requestProductCollection;
     }
 
     @Override
@@ -137,10 +140,10 @@ public class Bill implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Bill)) {
+        if (!(object instanceof Request)) {
             return false;
         }
-        Bill other = (Bill) object;
+        Request other = (Request) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -150,21 +153,15 @@ public class Bill implements Serializable {
     @Override
     public String toString() {
         return '№' + this.id.toString() + " от " + DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(creationDate)
-                + ":  " + this.billSum.toString() + "р.";
+                + ":  " + this.requestSum.toString() + "р.";
     }
 
-    /**
-     * @return the employee
-     */
-    public Employee getEmployee() {
-        return employee;
+    public static BigDecimal calcSum(Request i) {
+        if (i == null || i.getRequestProductCollection() == null) return null;
+        BigDecimal sum = new BigDecimal(0);
+        for(RequestProduct ip : i.getRequestProductCollection()) {
+            sum = sum.add(ip.getCost());
+        }
+        return sum;
     }
-
-    /**
-     * @param employee the employee to set
-     */
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
 }

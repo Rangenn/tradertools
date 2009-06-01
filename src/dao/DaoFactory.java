@@ -6,8 +6,10 @@
 package dao;
 
 import entity.Bill;
+import entity.Employee;
 import entity.Invoice;
 import entity.InvoiceProduct;
+import entity.RequestProduct;
 
 /**
  *
@@ -24,6 +26,9 @@ public class DaoFactory {
     private static BillDao bill;
     private static InvoiceDao invoice;
     private static GenericDaoHib<InvoiceProduct, Integer> invoiceProduct;
+    private static RequestDao request;
+    private static GenericDaoHib<RequestProduct, Integer> requestProduct;
+    private static GenericDaoHib<Employee, Integer> employee;
 
     public static CategoryDao getCategoryDao() {
         if (category == null)
@@ -74,6 +79,33 @@ public class DaoFactory {
         if (invoiceProduct == null)
             invoiceProduct = new GenericDaoHib<InvoiceProduct, Integer>(InvoiceProduct.class);
         return invoiceProduct;
+    }
+
+    /**
+     * @return the request
+     */
+    public static RequestDao getRequestDao() {
+        if (request == null)
+            request = new RequestDao();
+        return request;
+    }
+
+    /**
+     * @return the requestProduct
+     */
+    public static GenericDaoHib<RequestProduct, Integer> getRequestProductDao() {
+        if (requestProduct == null)
+            requestProduct = new GenericDaoHib<RequestProduct, Integer>(RequestProduct.class);
+        return requestProduct;
+    }
+
+    /**
+     * @return the employee
+     */
+    public static GenericDaoHib<Employee, Integer> getEmployeeDao() {
+        if (employee == null)
+            employee = new GenericDaoHib<Employee, Integer>(Employee.class);
+        return employee;
     }
     
 //    public static CategoryDao getCategoryDao() {

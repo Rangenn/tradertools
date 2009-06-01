@@ -55,6 +55,8 @@ public class Product implements Serializable {
     private List<Supply> supplyCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.LAZY)
     private List<InvoiceProduct> InvoiceProductCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.LAZY)
+    private List<RequestProduct> RequestProductCollection;
 
     public Product() {
     }
@@ -126,11 +128,8 @@ public class Product implements Serializable {
         if (!(object instanceof Product)) {
             return false;
         }
-        Product other = (Product) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        Product other = (Product) object;       
+        return this.getTitle().equals(other.getTitle());
     }
 
     @Override
@@ -150,6 +149,20 @@ public class Product implements Serializable {
      */
     public void setInvoiceProductCollection(List<InvoiceProduct> InvoiceProductCollection) {
         this.InvoiceProductCollection = InvoiceProductCollection;
+    }
+
+    /**
+     * @return the RequestProductCollection
+     */
+    public List<RequestProduct> getRequestProductCollection() {
+        return RequestProductCollection;
+    }
+
+    /**
+     * @param RequestProductCollection the RequestProductCollection to set
+     */
+    public void setRequestProductCollection(List<RequestProduct> RequestProductCollection) {
+        this.RequestProductCollection = RequestProductCollection;
     }
 
 }

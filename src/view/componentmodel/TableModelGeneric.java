@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package view.componentmodels;
+package view.componentmodel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

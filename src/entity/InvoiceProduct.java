@@ -82,6 +82,7 @@ public class InvoiceProduct implements Serializable {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+        setCost(calcCost(this));
     }
 
     public int getAmount() {
@@ -90,6 +91,7 @@ public class InvoiceProduct implements Serializable {
 
     public void setAmount(int amount) {
         this.amount = amount;
+        setCost(calcCost(this));
     }
 
     public BigDecimal getCost() {
@@ -100,20 +102,20 @@ public class InvoiceProduct implements Serializable {
         this.cost = cost;
     }
 
-    public Invoice getInvoiceId() {
+    public Invoice getInvoice() {
         return invoice;
     }
 
-    public void setInvoiceId(Invoice invoiceId) {
-        this.invoice = invoiceId;
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 
-    public Product getProductId() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProductId(Product productId) {
-        this.product = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Override
@@ -125,20 +127,24 @@ public class InvoiceProduct implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof InvoiceProduct)) {
             return false;
         }
         InvoiceProduct other = (InvoiceProduct) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (other.getProduct().equals(this.getProduct()));
+//        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+//            return false;
+//        }
+//        return true;
     }
 
     @Override
     public String toString() {
-        return "entity.InvoiceProduct[id=" + id + "]";
+        return getProduct().toString();
     }
 
+    public static BigDecimal calcCost(InvoiceProduct ip) {
+        return ip.getPrice().multiply(new BigDecimal(ip.getAmount()));
+    }
 }

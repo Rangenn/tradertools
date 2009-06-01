@@ -53,8 +53,7 @@ public class FormSupplyList extends javax.swing.JFrame {
             jMenuView.add(m);
         }
         setVisiblePriceColumns();
-        loadTextProps();
-        
+        loadTextProps();        
     }
 
     /** This method is called from within the constructor to
@@ -135,11 +134,17 @@ public class FormSupplyList extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelSupplyList1, javax.swing.GroupLayout.DEFAULT_SIZE, 774, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelSupplyList1, javax.swing.GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelSupplyList1, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelSupplyList1, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -171,7 +176,7 @@ public class FormSupplyList extends javax.swing.JFrame {
     private view.JPanelSupplyList jPanelSupplyList1;
     // End of variables declaration//GEN-END:variables
 
-
+    // <editor-fold defaultstate="collapsed" desc="ActionListeners">
     public void addjMenuItemAddActionListener(ActionListener l)
     {
         jMenuItemAdd.addActionListener(l);
@@ -183,17 +188,10 @@ public class FormSupplyList extends javax.swing.JFrame {
 
     public void addjMenuItemEditActionListener(final ActionListener l)
     {
-        MouseListener buf = new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-               if (e.getClickCount() == 2)
-                   l.actionPerformed(null);
-            }
-        };
-        getJPanelSupplyList().getTable().addMouseListener(buf);
+        jPanelSupplyList1.addDoubleClickOnTableListener(l);
         jMenuItemEdit.addActionListener(l);
     }
+    
     public void removejMenuItemEditActionListener(ActionListener l)
     {
         jMenuItemEdit.removeActionListener(l);
@@ -208,6 +206,7 @@ public class FormSupplyList extends javax.swing.JFrame {
         jMenuItemRemove.removeActionListener(l);
     }
 
+    // </editor-fold> 
     /**
      * @return the jPanelSupplyList1.getJPanelSearch()
      */

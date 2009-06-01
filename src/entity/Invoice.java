@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.DateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -72,6 +73,9 @@ public class Invoice implements Serializable {
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Customer seller;
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Employee employee;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "invoice", fetch = FetchType.LAZY)
     private List<InvoiceProduct> invoiceProductCollection;
 
@@ -187,4 +191,41 @@ public class Invoice implements Serializable {
                 + ":  " + this.invoiceSum.toString() + "р.";
     }
 
+    /**
+     * проверка на наличие продукта с таким именем в накладной(счете)
+     * @param i
+     * @param ip
+     * @return
+     */
+    public static boolean сontainsProduct(Invoice i, InvoiceProduct ip) {
+        if (i == null || i.getInvoiceProductCollection() == null || ip == null) return false;
+        String s = ip.getProduct().getTitle();
+        for(InvoiceProduct buf : i.getInvoiceProductCollection()) {
+            if (s.equals(buf.getProduct().getTitle())) return true;
+        }
+        return false;
+    }
+
+    public static BigDecimal calcSum(Invoice i) {
+        if (i == null || i.getInvoiceProductCollection() == null) return null;
+        BigDecimal sum = new BigDecimal(0);
+        for(InvoiceProduct ip : i.getInvoiceProductCollection()) {
+            sum = sum.add(ip.getCost());
+        }
+        return sum;
+    }
+
+    /**
+     * @return the employee
+     */
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    /**
+     * @param employee the employee to set
+     */
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 }

@@ -14,20 +14,18 @@ package view;
 import entity.Supply;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JScrollBar;
-import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.text.BadLocationException;
-import view.componentmodels.TMSupply;
+import util.ConvertUtil;
+import view.componentmodel.TMSupply;
 
 /**
  *
@@ -37,11 +35,13 @@ public class JPanelSupplyList extends javax.swing.JPanel {
 
     private List<Supply> ListSupplies;
 
+    private boolean Editable;
     /**
      * Creates new form JPanelSupplyList
      */
     public JPanelSupplyList() {
         initComponents();
+        setEditable(false);
         getTable().setColumnSelectionAllowed(false);
 
         DocumentListener dl = new DocumentListenerSearch();
@@ -59,7 +59,7 @@ public class JPanelSupplyList extends javax.swing.JPanel {
                 SearchNext(getJPanelSearch().getSearchTemplate(), index);
             }
         };
-        getJPanelSearch().addjButtonNextActionListener(l);
+        getJPanelSearch().addjButtonNextActionListener(l);//search next
 
         l = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -73,7 +73,7 @@ public class JPanelSupplyList extends javax.swing.JPanel {
                 SearchPrev(getJPanelSearch().getSearchTemplate(), index);
             }
         };
-        getJPanelSearch().addjButtonPrevActionListener(l);
+        getJPanelSearch().addjButtonPrevActionListener(l); //search prev
     }
 
 //    public JPanelSupplyList(List<Supply> list) {
@@ -108,7 +108,7 @@ public class JPanelSupplyList extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -127,9 +127,9 @@ public class JPanelSupplyList extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanelSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 300, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
                 .addComponent(jPanelAddEditRemove1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jScrollPaneSupplyList, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
+            .addComponent(jScrollPaneSupplyList, javax.swing.GroupLayout.DEFAULT_SIZE, 728, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,6 +150,12 @@ public class JPanelSupplyList extends javax.swing.JPanel {
     private javax.swing.JTable jTableSupplyList;
     // End of variables declaration//GEN-END:variables
 
+    // <editor-fold defaultstate="collapsed" desc="ActionListeners">
+    public void addDoubleClickOnTableListener(final ActionListener l)
+    {
+        getTable().addMouseListener(ConvertUtil.convert(l));
+    }
+    // </editor-fold>
 
 public void Search(DocumentEvent e)
     {
@@ -233,6 +239,12 @@ public void Search(DocumentEvent e)
         return jScrollPaneSupplyList;
     }
 
+    public void viewAllColumns() {
+         for(int i = 0; i < getTable().getColumnCount(); i++){
+            setColumnVisible(i,true);
+        }
+    }
+
     public void setColumnVisible(int index, boolean isVisible){
         if (index < 0 || index > getTable().getColumnCount() - 1) return;
         int tmp = 0;
@@ -293,6 +305,22 @@ public void Search(DocumentEvent e)
         }
     }
 
+    public List<Supply> getSelectedItems(){
+        List<Supply> res = new ArrayList<Supply>();
+        for(int i = 0; i < getTable().getSelectedRowCount(); i++)
+            try {
+                res.add(ListSupplies.get(getTable().getSelectedRows()[i]));
+            }
+            catch (IndexOutOfBoundsException ex) {
+                //return null;
+            }
+            catch (IllegalStateException ex){
+                //return null;
+            }
+        return res;
+    }
+
+
     public void setSelectedItem(Supply p){
         setSelectedIndex(ListSupplies.indexOf(p));
     }
@@ -309,6 +337,21 @@ public void Search(DocumentEvent e)
         int tmp = (Scroll.getMaximum() - Scroll.getMinimum())
                 *(ListSupplies.size() - index)/ListSupplies.size();
         Scroll.setValue(Scroll.getMaximum() - tmp);        
+    }
+
+    /**
+     * @return the Editable
+     */
+    public boolean isEditable() {
+        return Editable;
+    }
+
+    /**
+     * @param Editable the Editable to set
+     */
+    public void setEditable(boolean Editable) {
+        this.Editable = Editable;
+        jPanelAddEditRemove1.setVisible(Editable);
     }
 
 //class MyTableCellRenderer extends javax.​swing.​table.DefaultTableCellRender implements TableCellRenderer {

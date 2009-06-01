@@ -44,9 +44,6 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Z"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/view/icons/arrow_return_180_left.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Undo"/>
               </Properties>
             </MenuItem>
@@ -54,9 +51,6 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Y"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/view/icons/arrow_return.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Redo"/>
               </Properties>
@@ -70,9 +64,6 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemAbout">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/view/icons/information_frame.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="About"/>
               </Properties>
               <Events>
@@ -171,16 +162,19 @@
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Table"/>
+                <TitledBorder title="&#x422;&#x438;&#x43f; &#x434;&#x43e;&#x43a;&#x443;&#x43c;&#x435;&#x43d;&#x442;&#x430;"/>
               </Border>
             </Property>
             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="1">
-                <StringItem index="0" value="Price"/>
+              <StringArray count="5">
+                <StringItem index="0" value="&#x41f;&#x440;&#x430;&#x439;&#x441; &#x418;&#x41f; &#x422;&#x438;&#x445;&#x43e;&#x43d;&#x43e;&#x432;"/>
+                <StringItem index="1" value="&#x41f;&#x440;&#x430;&#x439;&#x441; &#x421;&#x435;&#x440;&#x43f;&#x443;&#x445;&#x43e;&#x432;"/>
+                <StringItem index="2" value="&#x41f;&#x440;&#x430;&#x439;&#x441; &#x412;&#x438;&#x43b;&#x43b;&#x435;&#x440;"/>
+                <StringItem index="3" value="&#x421;&#x447;&#x435;&#x442; &#x412;&#x438;&#x43b;&#x43b;&#x435;&#x440;"/>
+                <StringItem index="4" value="&#x421;&#x447;&#x435;&#x442; &#x421;&#x435;&#x440;&#x43f;&#x443;&#x445;&#x43e;&#x432;"/>
               </StringArray>
             </Property>
             <Property name="selectionMode" type="int" value="0"/>
-            <Property name="selectedIndex" type="int" value="0"/>
           </Properties>
         </Component>
       </SubComponents>
