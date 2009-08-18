@@ -7,6 +7,7 @@ package dao;
 
 import java.io.Serializable;
 import java.util.List;
+import org.hibernate.LockMode;
 import org.hibernate.Transaction;
 import util.HibUtil;
 /**
@@ -47,9 +48,10 @@ public class GenericDaoHib <T, PK extends Serializable>
     public boolean exists(PK id) {
         return (read(id) != null);
     }
-//    public void refresh(T o){
-//        HibUtil.getSession().refresh(o, LockMode.FORCE);
-//    }
+
+    public void refresh(T o){
+        HibUtil.getSession().refresh(o, LockMode.FORCE);
+    }
 
     public List<T> getList(){
 //        Transaction t = HibUtil.getSession().beginTransaction();

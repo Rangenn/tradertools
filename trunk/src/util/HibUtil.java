@@ -37,6 +37,8 @@ private static final Session session;
                     .addAnnotatedClass(entity.RequestProduct.class)
                     .addAnnotatedClass(entity.Employee.class)
                     .addAnnotatedClass(entity.User.class)
+                    .addAnnotatedClass(entity.SupplyChange.class)
+                    .addAnnotatedClass(entity.Unit.class)
                     .configure().buildSessionFactory();
             session = sessionFactory.openSession();
         } catch (Exception ex) {

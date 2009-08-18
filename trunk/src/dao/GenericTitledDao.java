@@ -7,8 +7,8 @@ package dao;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -18,7 +18,7 @@ import util.HibUtil;
  *
  * @author е
  */
-public class GenericTitledDao<T, PK extends Serializable> extends GenericDaoHib{
+public class GenericTitledDao<T, PK extends Serializable> extends GenericDaoHib<T, PK> {
 
     public GenericTitledDao(Class<T> type) {
         super(type);
@@ -50,7 +50,7 @@ public class GenericTitledDao<T, PK extends Serializable> extends GenericDaoHib{
             res = this.getList(titleLike).get(0);
         }
         catch (IndexOutOfBoundsException ex){
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "get(title) has no result");
+            Logger.getLogger(this.getClass().getName()).log(Level.WARN, "get(title) has no result");
         }
         return res;
     }

@@ -8,8 +8,8 @@ package view.componentmodel;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -63,12 +63,12 @@ public class TableModelGeneric<T> extends AbstractTableModel{
                     }
                 }
             } catch (IllegalArgumentException ex) {
-                Logger.getLogger(TableModelGeneric.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TableModelGeneric.class.getName()).log(Level.ERROR, null, ex);
             } catch (IllegalAccessException ex) {
-                Logger.getLogger(TableModelGeneric.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TableModelGeneric.class.getName()).log(Level.ERROR, null, ex);
             }
             catch (InvocationTargetException ex) {
-                Logger.getLogger(TableModelGeneric.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TableModelGeneric.class.getName()).log(Level.ERROR, null, ex);
             }
             return null;
         }

@@ -5,6 +5,7 @@
 
 package view.componentmodel;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
@@ -19,6 +20,8 @@ public class GenericListModel<T> extends AbstractListModel implements ComboBoxMo
     private T SelectedItem;
 
     public GenericListModel(List<T> list) {
+        if (list == null)
+            data = new ArrayList<T>();
         data = list;
     }
 

@@ -187,8 +187,9 @@ public class Invoice implements Serializable {
 
     @Override
     public String toString() {
-        return '№' + this.id.toString() + " от " + DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(creationDate)
-                + ":  " + this.invoiceSum.toString() + "р.";
+        return "№ " + this.id.toString() + " от " + DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(creationDate)
+                + ":  " + this.invoiceSum.toString() + "р."
+                ;
     }
 
     /**

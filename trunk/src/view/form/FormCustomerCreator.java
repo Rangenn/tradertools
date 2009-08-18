@@ -25,13 +25,13 @@ public class FormCustomerCreator extends javax.swing.JFrame
     public FormCustomerCreator(int mode) {
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        if (mode == CustomerManagingTool.MODE_SUPPLIERS) {
-            jPanelCustomerFullInfo1.getData().setIsSupplier(true);
-            setTitle("New Supplier");
-        } else {
-            jPanelCustomerFullInfo1.getData().setIsSupplier(false);
-            setTitle("New Client");
-        }
+//        if (mode == CustomerManagingTool.MODE_SUPPLIERS) {
+////            jPanelCustomerFullInfo1.getData().setIsSupplier(true);
+//            setTitle("New Supplier");
+//        } else {
+////            jPanelCustomerFullInfo1.getData().setIsSupplier(false);
+////            setTitle("New Client");
+//        }
         jPanelCustomerFullInfo1.setEditable(true);
     }
 

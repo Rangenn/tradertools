@@ -33,9 +33,9 @@ import javax.persistence.Table;
          query = "SELECT s FROM Supply s")
 //,@NamedQuery(name = "Supply.getPrice",
 //         query = "SELECT sch.price FROM SupplyChange sch " +
-//         "WHERE sch.id = :id " +
+//         "WHERE sch.supply = :id " +
 //         "AND sch.ToDate IS NULL " +
-//         "AND sch.FromDate = (SELECT MAX(FromDate) FROM SupplyChange WHERE id = :id)")
+//         "AND sch.FromDate = (SELECT MAX(FromDate) FROM SupplyChange WHERE supply = :id)")
 })
 public class Supply implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -46,20 +46,24 @@ public class Supply implements Serializable {
     @Basic(optional = false)
     @Column(name = "amount_min")
     private Integer amountMin;
+    @Basic(optional = false)
     @Column(name = "default_order_amount")
     private Integer defaultOrderAmount;
 //    @Column(name = "prev_price")
 //    private BigDecimal prevPrice;
-    @Basic(optional = false)
-    @Column(name = "price")
+//    @Basic(optional = false)
+    @Column(name = "price", updatable = false)
     private BigDecimal Price;
     //@Basic(optional = false)
-    @Column(name = "amount_left")
+    @Column(name = "amount_left", updatable = false)
     private Integer amountLeft;
+    
     @Column(name = "image_link")
     private String imageLink;
     @Column(name = "description")
     private String description;
+    @Column(name = "visible")
+    private boolean visible;
 
     @JoinColumn(name = "seller_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -67,8 +71,8 @@ public class Supply implements Serializable {
     @JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Product product;
-    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "supply", fetch = FetchType.LAZY)
-    //private List<Integer> supplyChangeCollection;//?!
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supply", fetch = FetchType.LAZY)
+    private List<SupplyChange> supplyChangeCollection;//?!
 
     public Supply() {
     }
@@ -77,15 +81,16 @@ public class Supply implements Serializable {
         this.supplyPK = supplyPK;
     }
 
-    public Supply(SupplyPK supplyPK, int amountMin, BigDecimal actualPrice) {
+    public Supply(SupplyPK supplyPK, int amountMin, BigDecimal actualPrice, Integer amountLeft) {
         this.supplyPK = supplyPK;
         this.amountMin = amountMin;
         this.Price = actualPrice;
+        this.amountLeft = amountLeft;
     }
 
-    public Supply(int productId, int sellerId) {
-        this.supplyPK = new SupplyPK(productId, sellerId);
-    }
+//    public Supply(int productId, int sellerId) {
+//        this.supplyPK = new SupplyPK(productId, sellerId);
+//    }
 
     public SupplyPK getSupplyPK() {
         return supplyPK;
@@ -123,8 +128,8 @@ public class Supply implements Serializable {
         return Price;
     }
 
-    public void setPrice(BigDecimal actualPrice) {
-        this.Price = actualPrice;
+    public void setPrice(BigDecimal Price) {              
+        this.Price = Price;
     }
 
     public Integer getAmountLeft() {
@@ -216,6 +221,34 @@ public class Supply implements Serializable {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * @return the supplyChangeCollection
+     */
+    public List<SupplyChange> getSupplyChangeCollection() {
+        return supplyChangeCollection;
+    }
+
+    /**
+     * @param supplyChangeCollection the supplyChangeCollection to set
+     */
+    public void setSupplyChangeCollection(List<SupplyChange> supplyChangeCollection) {
+        this.supplyChangeCollection = supplyChangeCollection;
+    }
+
+    /**
+     * @return the visible
+     */
+    public boolean isVisible() {
+        return visible;
+    }
+
+    /**
+     * @param visible the visible to set
+     */
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
 }

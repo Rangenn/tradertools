@@ -52,7 +52,7 @@ public class FormInvoiceCreator extends javax.swing.JFrame
         jPanelCustomerShortInfo1.setEditable(false);
 
         if (mode == CustomerManagingTool.MODE_CLIENTS) {
-            jPanelSupplyList1.setItemList(Myself.getSupplyCollection());
+            jPanelSupplyList1.setItemList(Myself);
             jPanelSupplyList1.viewAllColumns();
             jPanelSupplyList1.setColumnVisible(2, false);//?! зависит от tmsupply
             jPanelSupplyList1.setColumnVisible(3, false);
@@ -200,7 +200,7 @@ public class FormInvoiceCreator extends javax.swing.JFrame
        
         if (mode == CustomerManagingTool.MODE_SUPPLIERS) { //TODO: переключение прайс-листов
             jPanelInvoice1.clearData();
-            jPanelSupplyList1.setItemList(c.getSupplyCollection());        
+            jPanelSupplyList1.setItemList(c);        
             jPanelSupplyList1.viewAllColumns();
             jPanelSupplyList1.setColumnVisible(2, false);
             jPanelSupplyList1.setColumnVisible(3, false);

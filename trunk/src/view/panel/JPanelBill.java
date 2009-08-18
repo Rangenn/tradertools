@@ -46,9 +46,17 @@ public class JPanelBill extends javax.swing.JPanel
 
             @Override
             public void focusLost(FocusEvent e) {
+                assert (e.getSource() instanceof javax.swing.JFormattedTextField);
                 String s = ((javax.swing.JFormattedTextField)e.getSource()).getText();
                 //s.replace(' ', '');
-                data.setBillSum(new BigDecimal(s));
+                try {
+                    data.setBillSum(new BigDecimal(s));
+                }
+                catch (NumberFormatException ex) {
+                    System.out.println(ex.toString());
+                    ((javax.swing.JFormattedTextField)e.getSource()).setText(
+                            data.getBillSum().toString());
+                }
             }
         };
         jFormattedTextFieldSum.addFocusListener(fl); //изменение BillSum

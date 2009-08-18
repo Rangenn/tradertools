@@ -6,6 +6,9 @@
 package util;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -23,6 +26,18 @@ public class ConvertUtil {
             public void mouseClicked(MouseEvent e) {
                if (e.getClickCount() == 2)
                    l.actionPerformed(null);
+            }
+        };
+       return buf;
+    }
+
+    public static KeyListener convert(final ActionListener l, final int keycode) {
+        KeyListener buf = new KeyAdapter() {
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == keycode)
+                    l.actionPerformed(null);
             }
         };
        return buf;

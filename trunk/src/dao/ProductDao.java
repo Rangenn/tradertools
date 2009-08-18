@@ -23,7 +23,7 @@ public class ProductDao extends GenericTitledDao<Product, Integer> {
         if (badString(title)) return null;
         if (exists(title))
             throw new DaoException(PropsUtil.getProperty("DaoException.ObjectExists"));
-        Product pr = new Product(title);
+        Product pr = new Product(title);        
         create(pr);
         return pr;
     }
@@ -37,16 +37,23 @@ public class ProductDao extends GenericTitledDao<Product, Integer> {
         return pr;
     }
 
-    public void update(Product pr, String title) {
-        if (badString(title)) return;
-        pr.setTitle(title);
-        update(pr);
+    @Override
+    public Integer create(Product pr) {
+        if (pr.getUnit() == null)
+                pr.setUnit(DaoFactory.getUnitDao().getDefaultUnit());//?!
+        return super.create(pr);
     }
 
-    //will be deprecated
-    public void update(Product pr, String article, Category category) {
-        pr.setArticle(article);
-        pr.setCategory(category);
-        update(pr);
-    }
+//    public void update(Product pr, String title) {
+//        if (badString(title)) return;
+//        pr.setTitle(title);
+//        update(pr);
+//    }
+//
+//    //will be deprecated
+//    public void update(Product pr, String article, Category category) {
+//        pr.setArticle(article);
+//        pr.setCategory(category);
+//        update(pr);
+//    }
 }

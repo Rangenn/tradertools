@@ -40,21 +40,26 @@ public class InvoiceCreator implements ICreator<Invoice> {
 
             public void actionPerformed(ActionEvent e) {
                 Invoice data = getForm().getData();
+                if (data.getInvoiceProductCollection().isEmpty()) {
+                    JOptionPane.showMessageDialog(FInvoiceCreator, "Невозможно создать пустой счет.");
+                    return;
+                }
                 //TODO: вместо заглушки авторизацию
                 data.setEmployee(DaoFactory.getEmployeeDao().read(1));//заглушка                
                 DaoFactory.getInvoiceDao().create(data);
                 for(InvoiceProduct buf : data.getInvoiceProductCollection()) {
                     Supply s = DaoFactory.getSupplyDao().read(
                             new SupplyPK(buf.getProduct().getId(), data.getSellerId().getId()));
-                    s.setAmountLeft(s.getAmountLeft() - buf.getAmount());
-                    DaoFactory.getSupplyDao().update(s);//обновляем остаток товара на складе
+//                    s.setAmountLeft(s.getAmountLeft() - buf.getAmount());
+                    DaoFactory.getSupplyChangeDao().create(s, s.getAmountLeft() - buf.getAmount(), s.getPrice());
+                    //DaoFactory.getSupplyDao().refresh(s);//обновляем остаток товара на складе
                 }
                 getForm().dispose();
             }
         };
         FInvoiceCreator.getJPanelOkCancel().addOkActionListener(l); //ок: запись сущности в базу
 
-        l= new ActionListener() {
+        l = new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 getForm().dispose();

@@ -18,8 +18,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -271,7 +271,7 @@ public class FormTransmitter extends javax.swing.JFrame {
         try {
             this.setIconImage(ImageIO.read(new File(PropsUtil.getProperty("icon.hammer"))));
         } catch (IOException ex) {
-            Logger.getLogger(FormSupplyList.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormSupplyList.class.getName()).log(Level.ERROR, null, ex);
         }
     }
 }

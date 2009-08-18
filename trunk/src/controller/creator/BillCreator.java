@@ -5,7 +5,9 @@
 
 package controller.creator;
 
+import dao.BillDao;
 import dao.DaoFactory;
+import dao.GenericDaoHib;
 import entity.Bill;
 import entity.Customer;
 import java.awt.event.ActionEvent;
@@ -38,9 +40,17 @@ public class BillCreator implements ICreator<Bill> {
                 
                 getForm().getData().setEmployee(DaoFactory.getEmployeeDao().read(1));
                 if (getForm().getData().getBillSum().compareTo(new BigDecimal(0)) <= 0) {
-                    JOptionPane.showMessageDialog(getForm(), "Сумма платежа должна быть положительной.");
+                    JOptionPane.showMessageDialog(getForm(),
+                            "Сумма платежа должна быть положительной.");
                     return;
                 }
+                String s = getForm().getData().getPurpose();
+                if (s == null || s.equals("")) {
+                    JOptionPane.showMessageDialog(getForm(),
+                            "Не заполнено поле 'Назначение платежа'.");
+                    return;
+                }
+
                 DaoFactory.getBillDao().create(
                         getForm().getData());
                 getForm().dispose();

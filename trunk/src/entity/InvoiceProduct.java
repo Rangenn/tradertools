@@ -20,6 +20,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 
 /**
  *
@@ -46,8 +48,9 @@ public class InvoiceProduct implements Serializable {
     @Basic(optional = false)
     @Column(name = "amount")
     private int amount;
-    @Column(name = "cost")
-    private BigDecimal cost;
+    @Generated(GenerationTime.INSERT)
+    @Column(name = "cost", insertable = false)
+    private BigDecimal cost; //при записи в базу рассчитывается триггером
     @JoinColumn(name = "invoice_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Invoice invoice;

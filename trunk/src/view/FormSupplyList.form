@@ -35,7 +35,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemAdd">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+EQUALS"/>
+                  <KeyStroke key="Ctrl+A"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Add"/>
               </Properties>
@@ -43,7 +43,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemEdit">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+ENTER"/>
+                  <KeyStroke key="Ctrl+E"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Edit"/>
               </Properties>
@@ -51,9 +51,9 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemRemove">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="DELETE"/>
+                  <KeyStroke key="Ctrl+D"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Remove"/>
+                <Property name="text" type="java.lang.String" value="Delete"/>
               </Properties>
             </MenuItem>
           </SubComponents>

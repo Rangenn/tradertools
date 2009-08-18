@@ -248,6 +248,7 @@ public class JPanelCustomerFullInfo extends javax.swing.JPanel implements IEntit
     }
 
     public void setData(Customer data) {
+        if (data == null) clearData();//?!
         this.data = data;
         updateDisplay();
     }

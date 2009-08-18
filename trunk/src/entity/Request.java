@@ -15,20 +15,30 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 
 /**
  *
  * @author е
  */
+@SequenceGenerator(
+    name="SEQ_GEN",
+    sequenceName="request_id_seq",
+    allocationSize=1
+)
 @Entity
 @Table(name = "request")
 @NamedQueries({@NamedQuery(name = "Request.findAll", query = "SELECT r FROM Request r"),
@@ -38,6 +48,7 @@ public class Request implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_GEN")
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
@@ -59,7 +70,7 @@ public class Request implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "request", fetch = FetchType.LAZY)
     private List<RequestProduct> requestProductCollection;
 
-    private BigDecimal requestSum;
+//    private BigDecimal requestSum;
 
     public Request() {
     }
@@ -153,7 +164,7 @@ public class Request implements Serializable {
     @Override
     public String toString() {
         return '№' + this.id.toString() + " от " + DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(creationDate)
-                + ":  " + this.requestSum.toString() + "р.";
+                + ":  " + calcSum(this).toString() + "р.";
     }
 
     public static BigDecimal calcSum(Request i) {
