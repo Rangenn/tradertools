@@ -73,7 +73,7 @@ public class Transmitter {
             j = 0;
             for (Iterator cit = row.cellIterator(); cit.hasNext(); j++) {
                 HSSFCell cell = (HSSFCell)cit.next();
-                res[i][j] = cell.toString();
+                res[i][j] = cell.toString().trim();//удаляем пробелы
             }
         }
         return res;

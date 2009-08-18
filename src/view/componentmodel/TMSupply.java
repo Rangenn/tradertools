@@ -5,6 +5,7 @@
 
 package view.componentmodel;
 
+import entity.Customer;
 import entity.Supply;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,13 +19,13 @@ import util.PropsUtil;
  */
 public class TMSupply extends AbstractTableModel {
 
-    protected static final int COLUMN_COUNT = 8;
+    protected static final int COLUMN_COUNT = 9;
     
-    private List<Supply> data;
+    private Customer data;
     protected List<Integer> ColumnsPrefSize;
 
-    public TMSupply(List<Supply> list) {
-        data = list;
+    public TMSupply(Customer c) {
+        data = c;
         ColumnsPrefSize = new ArrayList<Integer>();
         ColumnsPrefSize.add(new Integer(45));
         ColumnsPrefSize.add(new Integer(300));
@@ -40,7 +41,7 @@ public class TMSupply extends AbstractTableModel {
     }
 
     public int getRowCount() {
-        return data.size();
+        return data.getSupplyCollection().size();
     }
 
     public int getColumnCount() {
@@ -49,7 +50,7 @@ public class TMSupply extends AbstractTableModel {
 
     public Object getValueAt(int rowIndex, int columnIndex) {
         try {
-            Supply buf = data.get(rowIndex);
+            Supply buf = data.getSupplyCollection().get(rowIndex);
             switch (columnIndex)
             {
                 case 0: { return rowIndex; }
@@ -60,6 +61,7 @@ public class TMSupply extends AbstractTableModel {
                 case 5: { return buf.getPrice().setScale(0, BigDecimal.ROUND_HALF_UP).intValue(); }
                 case 6: { return buf.getAmountLeft(); }
                 case 7: { return buf.getProduct().getCategory(); }
+                case 8: { return buf.isVisible(); }
                 default: { return null; }
             }
         }
@@ -81,6 +83,7 @@ public class TMSupply extends AbstractTableModel {
             case 5: { return PropsUtil.getProperty("Supply.ActualPrice"); }
             case 6: { return PropsUtil.getProperty("Supply.AmountLeft"); }
             case 7: { return PropsUtil.getProperty("Product.Category"); }
+            case 8: { return PropsUtil.getProperty("Supply.Visible"); }
         }
         return "?";
     }

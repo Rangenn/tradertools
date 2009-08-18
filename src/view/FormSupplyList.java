@@ -11,6 +11,7 @@
 
 package view;
 
+import entity.Customer;
 import java.awt.event.ActionEvent;
 import entity.Supply;
 import java.awt.event.ActionListener;
@@ -20,8 +21,8 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
@@ -35,16 +36,17 @@ import util.PropsUtil;
 public class FormSupplyList extends javax.swing.JFrame {
 
     /** Creates new form FormSupplyList */
-    public FormSupplyList(List<Supply> list) {
+    public FormSupplyList(Customer c) {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        jPanelSupplyList1.setItemList(list);     
+        
+        jPanelSupplyList1.setItemList(c);
         
         JCheckBoxMenuItem m = null;
         ActionListener l = new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                setVisiblePriceColumns();
+                setVisibleSupplyListColumns();
             }
         };
         for(int i = 0; i < jPanelSupplyList1.getTable().getColumnCount(); i++){
@@ -52,8 +54,9 @@ public class FormSupplyList extends javax.swing.JFrame {
             m.addActionListener(l);
             jMenuView.add(m);
         }
-        setVisiblePriceColumns();
-        loadTextProps();        
+        setVisibleSupplyListColumns();
+        loadTextProps();
+        this.setExtendedState(MAXIMIZED_BOTH);
     }
 
     /** This method is called from within the constructor to
@@ -99,16 +102,16 @@ public class FormSupplyList extends javax.swing.JFrame {
 
         jMenuEdit.setText("Правка");
 
-        jMenuItemAdd.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_EQUALS, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemAdd.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemAdd.setText("Add");
         jMenuEdit.add(jMenuItemAdd);
 
-        jMenuItemEdit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemEdit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemEdit.setText("Edit");
         jMenuEdit.add(jMenuItemEdit);
 
-        jMenuItemRemove.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
-        jMenuItemRemove.setText("Remove");
+        jMenuItemRemove.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemRemove.setText("Delete");
         jMenuEdit.add(jMenuItemRemove);
 
         jMenuBar1.add(jMenuEdit);
@@ -188,7 +191,7 @@ public class FormSupplyList extends javax.swing.JFrame {
 
     public void addjMenuItemEditActionListener(final ActionListener l)
     {
-        jPanelSupplyList1.addDoubleClickOnTableListener(l);
+//        jPanelSupplyList1.addDoubleClickOnTableListener(l);
         jMenuItemEdit.addActionListener(l);
     }
     
@@ -218,23 +221,23 @@ public class FormSupplyList extends javax.swing.JFrame {
         return jPanelSupplyList1;
     }
 
-    public Supply getSelectedPrice(){
+    public Supply getSelectedSupply(){
         return jPanelSupplyList1.getSelectedItem();
     }
 
-    public int getSelectedPriceIndex(){
+    public int getSelectedSupplyIndex(){
         return jPanelSupplyList1.getSelectedIndex();
     }
 
-    public void setSelectedPrice(Supply p){
+    public void setSelectedSupply(Supply p){
         jPanelSupplyList1.setSelectedItem(p);
     }
 
-    public void setSelectedPrice(int index){
+    public void setSelectedSupply(int index){
         jPanelSupplyList1.setSelectedIndex(index);
     }
 
-    public void setVisiblePriceColumns(){
+    public void setVisibleSupplyListColumns(){
         for(int i = 0; i < jPanelSupplyList1.getTable().getColumnCount(); i++){
             jPanelSupplyList1.setColumnVisible(i,((JCheckBoxMenuItem)jMenuView.getItem(i)).getState());
         }
@@ -244,7 +247,7 @@ public class FormSupplyList extends javax.swing.JFrame {
         try {
             this.setIconImage(ImageIO.read(new File(PropsUtil.getProperty("icon.hammer"))));
         } catch (IOException ex) {
-            Logger.getLogger(FormSupplyList.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormSupplyList.class.getName()).log(Level.ERROR, null, ex);
         }
         jMenuItemAdd.setIcon(new ImageIcon(
                 getClass().getResource(PropsUtil.getProperty("icon.add"))));

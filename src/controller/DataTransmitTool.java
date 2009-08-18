@@ -16,8 +16,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import org.hibernate.exception.JDBCConnectionException;
@@ -81,7 +81,7 @@ public class DataTransmitTool {
         try {
             data = new excel.Transmitter().Import(filename);
         } catch (IOException ex) {
-            Logger.getLogger(DataTransmitTool.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DataTransmitTool.class.getName()).error(ex);
             JOptionPane.showMessageDialog(FTransmitter, PropsUtil.getProperty("IOException"));
             return;
         }
@@ -105,21 +105,24 @@ public class DataTransmitTool {
                     a = new BigDecimal(data[i][2]);
                     //}
                     //catch (NumberFormatException ex) { a = null; }
-                    if (DaoFactory.getProductDao().exists(data[i][0])) {
+                    //if (DaoFactory.getProductDao().exists(data[i][0])) {
                         SupplyPK id = SupplyDao.createPK(
                             DaoFactory.getCustomerDao().getMySelf(), data[i][0]);
                         if (DaoFactory.getSupplyDao().exists(id)) {
                             s = DaoFactory.getSupplyDao().read(id);
-                            if (a.equals(s.getPrice())) {
+                            if (!a.equals(s.getPrice())) {
                                 s.setPrice(a);
-                                 DaoFactory.getSupplyDao().update(s);//обновление
+                                DaoFactory.getSupplyDao().update(s);//обновление
                             }
                         }
-                        else s = DaoFactory.getSupplyDao().create(id, a);  //создание
-                        s.getProduct().setArticle(data[i][1]);
-                        s.getProduct().setCategory(cat);
-                        DaoFactory.getProductDao().update(s.getProduct());
-                    }
+                    //}
+                        else {
+                            s = DaoFactory.getSupplyDao().create(id, a, 0);  //создание
+                            s.getProduct().setArticle(data[i][1]);
+                            s.getProduct().setCategory(cat);
+                            DaoFactory.getProductDao().update(s.getProduct());
+                        }
+
                 }
                 catch (Exception ex){
                     ctr++;
@@ -139,9 +142,8 @@ public class DataTransmitTool {
                     //}
                     //catch (NumberFormatException ex) { a = null; }
                     s = DaoFactory.getSupplyDao().create(SupplyDao.createPK(
-                            DaoFactory.getCustomerDao().get("Ока-Серпухов"), data[i][0]), a);//?! хардкод
-                    s.setAmountLeft(Double.valueOf(data[i][4]).intValue());
-                    DaoFactory.getProductDao().update(s.getProduct());
+                            DaoFactory.getCustomerDao().get("Ока-Серпухов"), data[i][0]), a,
+                            Double.valueOf(data[i][4]).intValue());//?! хардкод названия
                 }
                 catch (Exception ex){
                     ctr++;

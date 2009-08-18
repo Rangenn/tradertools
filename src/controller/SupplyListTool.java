@@ -9,20 +9,18 @@ import dao.DaoException;
 import dao.DaoFactory;
 import dao.SupplyDao;
 import entity.*;
+import java.awt.RenderingHints.Key;
+import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
+import org.apache.log4j.Logger;
 import org.hibernate.exception.JDBCConnectionException;
 import util.PropsUtil;
 import view.*;
@@ -34,7 +32,8 @@ import view.componentmodel.GenericListModel;
 public class SupplyListTool {
 
     FormSupplyList FSupplyList;
-    List<Supply> ListSupplies;
+    //List<Supply> ListSupplies;
+    Customer MySelf;
 
     public SupplyListTool(){
         try{
@@ -43,10 +42,9 @@ public class SupplyListTool {
         catch (Exception ex){
             System.out.println(ex.toString());
         }        
-
-        ListSupplies = DaoFactory.getSupplyDao().getList();
-
-        FSupplyList = new FormSupplyList(ListSupplies);
+        MySelf = DaoFactory.getCustomerDao().getMySelf();
+        MySelf.sortSupplies();
+        FSupplyList = new FormSupplyList(MySelf);
         FSupplyList.getJPanelSupplyList().setEditable(true);
         JPanelAddEditRemove aer = FSupplyList.getJPanelSupplyList().getJPanelAddEditRemove();
 
@@ -55,13 +53,15 @@ public class SupplyListTool {
                 StartAddSupply();
             }
         };
-//        FSupplyList.addjMenuItemAddActionListener(l);
+        FSupplyList.addjMenuItemAddActionListener(l);
         aer.addjButtonAddActionListener(l); //добавить товар
+
         l = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 StartEditSupply();
             }
         };
+        FSupplyList.addjMenuItemEditActionListener(l);
         FSupplyList.getJPanelSupplyList().addDoubleClickOnTableListener(l);
         aer.addjButtonEditActionListener(l); //редактировать товар
 
@@ -70,9 +70,9 @@ public class SupplyListTool {
                 StartDeleteSupply();
             }
         };
-//        FSupplyList.addjMenuItemDeleteActionListener(l);
+        FSupplyList.addjMenuItemDeleteActionListener(l);
         aer.addjButtonRemoveActionListener(l); //удалить товар
-
+        FSupplyList.getJPanelSupplyList().addTableKeyListener(l, KeyEvent.VK_DELETE);
         FSupplyList.setVisible(true);
     }
    
@@ -108,23 +108,20 @@ public class SupplyListTool {
     private boolean  EndSupplyFGIE(FormGenericItemEditor FGIE){
         title = FGIE.getTextFields().get(0).getText();
         article = FGIE.getTextFields().get(1).getText();
-        //amountleft = Integer.valueOf(FGIE.getTextFields().get(2).getText());
-        String sp = FGIE.getTextFields().get(3).getText();
-        if (title.equals("") || sp.equals("")){
+        if (title.equals("") 
+                || FGIE.getTextFields().get(2).getText().equals("")
+                || FGIE.getTextFields().get(3).getText().equals("")
+                || FGIE.getTextFields().get(4).getText().equals("")
+                || FGIE.getTextFields().get(5).getText().equals("")
+                ){
             JOptionPane.showMessageDialog(FGIE, "Не все поля заполнены", FGIE.getTitle(), JOptionPane.ERROR_MESSAGE);
             return false;//выход до вызова dispose, возврат к форме редактирования
         }
         try {
-            actualprice = new BigDecimal(sp);
-            if (!FGIE.getTextFields().get(2).getText().equals(""))
-                amountleft = Integer.valueOf(FGIE.getTextFields().get(2).getText());
-            else amountleft = 0;
-            if (!FGIE.getTextFields().get(4).getText().equals(""))
-                amountmin = Integer.valueOf(FGIE.getTextFields().get(4).getText());
-            else amountmin = 0;
-            if (!FGIE.getTextFields().get(5).getText().equals(""))
-                amountToOrder = Integer.valueOf(FGIE.getTextFields().get(5).getText());
-            else amountToOrder = 0;
+            actualprice = new BigDecimal(FGIE.getTextFields().get(3).getText());
+            amountleft = Integer.valueOf(FGIE.getTextFields().get(2).getText());
+            amountmin = Integer.valueOf(FGIE.getTextFields().get(4).getText());
+            amountToOrder = Integer.valueOf(FGIE.getTextFields().get(5).getText());
         }
         catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(FGIE, "Числовые поля заполнены некорректно", FGIE.getTitle(), JOptionPane.ERROR_MESSAGE);
@@ -152,18 +149,17 @@ public class SupplyListTool {
       try {
 
         Supply s = DaoFactory.getSupplyDao().create(SupplyDao.createPK(
-                DaoFactory.getCustomerDao().getMySelf(), title), actualprice);
-        s.setAmountLeft(amountleft);
+                MySelf, title), actualprice, amountleft);
         s.setAmountMin(amountmin);
         s.setDefaultOrderAmount(amountToOrder);
         DaoFactory.getSupplyDao().update(s);
         s.getProduct().setArticle(article);
         s.getProduct().setCategory(category);
         DaoFactory.getProductDao().update(s.getProduct());
-        ListSupplies.add(s);
+        DaoFactory.getCustomerDao().refresh(MySelf);
         FSupplyList.getJPanelSupplyList().getTable().updateUI();
         } catch (DaoException ex) {
-            Logger.getLogger(SupplyListTool.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SupplyListTool.class.getName()).error(ex);
             JOptionPane.showMessageDialog(FSupplyList, ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -178,7 +174,7 @@ public class SupplyListTool {
             }
         };
         FGIE.addjButtonOkActionListener(l);
-        Supply p = FSupplyList.getSelectedPrice();
+        Supply p = FSupplyList.getSelectedSupply();
         FGIE.getTextFields().get(0).setText(p.getProduct().getTitle());
         FGIE.getTextFields().get(1).setText(p.getProduct().getArticle());
         String s;
@@ -195,17 +191,21 @@ public class SupplyListTool {
 
     public void EndEditSupply(){
 //        try {
-            Supply s = FSupplyList.getSelectedPrice();
+            Supply s = FSupplyList.getSelectedSupply();
 //            if (!actualprice.equals(s.getPrice()))
 //                    s.setPrevPrice(s.getPrice());
-            s.setPrice(actualprice);
-            s.setAmountLeft(amountleft);
+            //s.setPrice(actualprice);
+            //s.setAmountLeft(amountleft);
+            DaoFactory.getSupplyChangeDao().create(s, amountleft, actualprice);
             s.setAmountMin(amountmin);
             s.setDefaultOrderAmount(amountToOrder);
             Product pr = s.getProduct();
             //pr.setCategory(category);
-            DaoFactory.getProductDao().update(pr, title);
-            DaoFactory.getProductDao().update(pr, article, category);
+            pr.setTitle(title);
+            pr.setArticle(article);
+            pr.setCategory(category);
+            DaoFactory.getProductDao().update(pr);//?!
+            //DaoFactory.getProductDao().update(pr, article, category);
             DaoFactory.getSupplyDao().update(s);
             FSupplyList.getJPanelSupplyList().getTable().updateUI();
 //        } catch (DaoException ex) {
@@ -215,12 +215,23 @@ public class SupplyListTool {
     }
 
     public void StartDeleteSupply(){
-        Supply s = FSupplyList.getSelectedPrice();
-        if (JOptionPane.showConfirmDialog(FSupplyList, "Вы уверены, что хотите удалить " + s.getProduct().getTitle()
-                + "?\n", "Удаление", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
-        DaoFactory.getSupplyDao().delete(s);
-        ListSupplies.remove(s);
-        FSupplyList.getJPanelSupplyList().getTable().updateUI();
+        Supply s = FSupplyList.getSelectedSupply();
+        if (JOptionPane.showConfirmDialog(FSupplyList, "Вы уверены, что хотите удалить \"" + s.getProduct().getTitle()
+                + "\"?\n", "Удаление", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+            try {
+                s.setVisible(false);
+                DaoFactory.getSupplyDao().update(s);
+            }
+            catch (Exception e) {
+                Logger.getLogger(this.getClass()).error(e);
+                JOptionPane.showMessageDialog(FSupplyList, 
+                        "Произошла ошибка при удалении. см.logfile.",
+                        "Ошибка",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+//          ListSupplies.remove(s);
+            FSupplyList.getJPanelSupplyList().getTable().updateUI();
+        }
     }
 
     // </editor-fold>

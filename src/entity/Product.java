@@ -51,6 +51,9 @@ public class Product implements Serializable {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ManyToOne()
     private Category category;
+    @JoinColumn(name = "unit_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne()
+    private Unit unit;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.LAZY)
     private List<Supply> supplyCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.LAZY)
@@ -111,7 +114,7 @@ public class Product implements Serializable {
         return supplyCollection;
     }
 
-    public void seSupplyCollection(List<Supply> supplyCollection) {
+    public void setSupplyCollection(List<Supply> supplyCollection) {
         this.supplyCollection = supplyCollection;
     }
 
@@ -163,6 +166,20 @@ public class Product implements Serializable {
      */
     public void setRequestProductCollection(List<RequestProduct> RequestProductCollection) {
         this.RequestProductCollection = RequestProductCollection;
+    }
+
+    /**
+     * @return the unit
+     */
+    public Unit getUnit() {
+        return unit;
+    }
+
+    /**
+     * @param unit the unit to set
+     */
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 
 }

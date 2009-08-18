@@ -11,15 +11,18 @@
 
 package view;
 
+import entity.Customer;
 import entity.Supply;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import javax.swing.JScrollBar;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -33,7 +36,7 @@ import view.componentmodel.TMSupply;
  */
 public class JPanelSupplyList extends javax.swing.JPanel {
 
-    private List<Supply> ListSupplies;
+    private Customer data;
 
     private boolean Editable;
     /**
@@ -52,9 +55,9 @@ public class JPanelSupplyList extends javax.swing.JPanel {
                 int index = 0;
                 try {
                     index = getSelectedIndex() + 1;
-                    if (index == ListSupplies.size()) index = 0;
+                    if (index == getListSupplies().size()) index = 0;
                 } catch (ArrayIndexOutOfBoundsException ex) {
-                    Logger.getLogger(JPanelSupplyList.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
+                    Logger.getLogger(JPanelSupplyList.class.getName()).log(Level.WARN, ex.getMessage(), ex);
                 }
                 SearchNext(getJPanelSearch().getSearchTemplate(), index);
             }
@@ -63,12 +66,12 @@ public class JPanelSupplyList extends javax.swing.JPanel {
 
         l = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int index = ListSupplies.size() - 1;
+                int index = getListSupplies().size() - 1;
                 try {
                     index = getSelectedIndex() - 1;
-                    if (index == -1) index = ListSupplies.size() - 1;
+                    if (index == -1) index = getListSupplies().size() - 1;
                 } catch (ArrayIndexOutOfBoundsException ex) {
-                    Logger.getLogger(JPanelSupplyList.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
+                    Logger.getLogger(JPanelSupplyList.class.getName()).log(Level.WARN, ex.getMessage(), ex);
                 }
                 SearchPrev(getJPanelSearch().getSearchTemplate(), index);
             }
@@ -94,21 +97,26 @@ public class JPanelSupplyList extends javax.swing.JPanel {
         jTableSupplyList = new javax.swing.JTable();
         jPanelSearch1 = new view.JPanelSearch();
         jPanelAddEditRemove1 = new view.JPanelAddEditRemove();
+        jPanel1 = new javax.swing.JPanel();
+        jComboBoxAmountLeft = new javax.swing.JComboBox();
+        jComboBoxCategory = new javax.swing.JComboBox();
+        jComboBoxVisible = new javax.swing.JComboBox();
+        jLabelFilter = new javax.swing.JLabel();
 
         jTableSupplyList.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jTableSupplyList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "№", "Наименование", "Артикул", "Цена", "Остаток"
+                "№", "Наименование", "Артикул", "Цена", "Остаток", "Категория", "Показывать"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -121,6 +129,43 @@ public class JPanelSupplyList extends javax.swing.JPanel {
         jScrollPaneSupplyList.setViewportView(jTableSupplyList);
         jTableSupplyList.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
+        jComboBoxAmountLeft.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Все", "Положительный", "Отрицательный", "Меньше минимального" }));
+        jComboBoxAmountLeft.setBorder(javax.swing.BorderFactory.createTitledBorder("Остаток"));
+
+        jComboBoxCategory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Все", "..." }));
+        jComboBoxCategory.setBorder(javax.swing.BorderFactory.createTitledBorder("Категория"));
+
+        jComboBoxVisible.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Все", "True", "False" }));
+        jComboBoxVisible.setBorder(javax.swing.BorderFactory.createTitledBorder("Visible"));
+
+        jLabelFilter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/icons/funnel.png"))); // NOI18N
+        jLabelFilter.setText("Фильтр:");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabelFilter)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBoxAmountLeft, 0, 100, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxCategory, 0, 100, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxVisible, 0, 100, Short.MAX_VALUE)
+                .addContainerGap(344, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jComboBoxAmountLeft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelFilter))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addComponent(jComboBoxVisible, javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jComboBoxCategory, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -130,11 +175,14 @@ public class JPanelSupplyList extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
                 .addComponent(jPanelAddEditRemove1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jScrollPaneSupplyList, javax.swing.GroupLayout.DEFAULT_SIZE, 728, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPaneSupplyList, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPaneSupplyList, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanelSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -144,6 +192,11 @@ public class JPanelSupplyList extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox jComboBoxAmountLeft;
+    private javax.swing.JComboBox jComboBoxCategory;
+    private javax.swing.JComboBox jComboBoxVisible;
+    private javax.swing.JLabel jLabelFilter;
+    private javax.swing.JPanel jPanel1;
     private view.JPanelAddEditRemove jPanelAddEditRemove1;
     private view.JPanelSearch jPanelSearch1;
     private javax.swing.JScrollPane jScrollPaneSupplyList;
@@ -155,6 +208,11 @@ public class JPanelSupplyList extends javax.swing.JPanel {
     {
         getTable().addMouseListener(ConvertUtil.convert(l));
     }
+
+     public void addTableKeyListener(final ActionListener l, final int keycode)
+    {        
+        getTable().addKeyListener(ConvertUtil.convert(l, keycode));
+    }
     // </editor-fold>
 
 public void Search(DocumentEvent e)
@@ -162,28 +220,28 @@ public void Search(DocumentEvent e)
         try {
             SearchNext(e.getDocument().getText(0, e.getDocument().getLength()), 0);
         } catch (BadLocationException ex) {
-            Logger.getLogger(JPanelSupplyList.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JPanelSupplyList.class.getName()).log(Level.ERROR, null, ex);
         }
     }
 
     private boolean checkSearchArgs(String template, int pos) {
         if (template == null || template.equals("")) return false;
-        if (pos < 0 || pos >= ListSupplies.size()) return false;
+        if (pos < 0 || pos >= getListSupplies().size()) return false;
         return true;
     }
     //SearchNext и SearchPrev требуют рефакторинга!
     public void SearchNext(String template, int pos)
     {
         if (!checkSearchArgs(template, pos)) return;
-        for(int i = pos; i < ListSupplies.size(); i++){
-            if (ListSupplies.get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
+        for(int i = pos; i < getListSupplies().size(); i++){
+            if (getListSupplies().get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
                 setSelectedIndex(i);
                 getJPanelSearch().setHavingResult(true);
                 return;
             }
         }
         for(int i = 0; i < pos; i++)
-            if (ListSupplies.get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
+            if (getListSupplies().get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
                 setSelectedIndex(i);
                 getJPanelSearch().setHavingResult(true);
                 return;
@@ -196,14 +254,14 @@ public void Search(DocumentEvent e)
     {
         if (!checkSearchArgs(template, pos)) return;
         for(int i = pos; i >= 0; i--){
-            if (ListSupplies.get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
+            if (getListSupplies().get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
                 setSelectedIndex(i);
                 getJPanelSearch().setHavingResult(true);
                 return;
             }
         }
-        for(int i = ListSupplies.size() - 1; i > pos; i--)
-            if (ListSupplies.get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
+        for(int i = getListSupplies().size() - 1; i > pos; i--)
+            if (getListSupplies().get(i).getProduct().getTitle().toLowerCase().startsWith(template.toLowerCase())){
                 setSelectedIndex(i);
                 getJPanelSearch().setHavingResult(true);
                 return;
@@ -262,12 +320,12 @@ public void Search(DocumentEvent e)
      * @return the ListSupplies
      */
     public List<Supply> getItemList() {
-        return ListSupplies;
+        return getListSupplies();
     }
 
-    public void setItemList(List<Supply> list) {
-        ListSupplies = list;
-        getTable().setModel(new TMSupply(ListSupplies));
+    public void setItemList(Customer c) {
+        data = c;
+        getTable().setModel(new TMSupply(c));
         for(int i = 0; i < getTable().getColumnCount(); i++)
             getTable().getColumnModel().getColumn(i).setMinWidth(0);
         setSelectedIndex(0);
@@ -282,12 +340,12 @@ public void Search(DocumentEvent e)
         Component c;
         Color color;
         for(int i = 0; i < getTable().getRowCount(); i++) {
-            if (ListSupplies.get(i).getAmountLeft() <= ListSupplies.get(i).getAmountMin())
+            if (getListSupplies().get(i).getAmountLeft() <= getListSupplies().get(i).getAmountMin())
                 color = Color.RED;
             else color = Color.GREEN;
             
             //СПРОСИТЬ ВАДИКА!
-            c = getTable().getCellRenderer(i, 5).getTableCellRendererComponent(jTableSupplyList, ListSupplies.get(i), false, false, i, 5);
+            c = getTable().getCellRenderer(i, 5).getTableCellRendererComponent(jTableSupplyList, getListSupplies().get(i), false, false, i, 5);
             c.setForeground(color);
             //.setCellRenderer(getTable().getCellRenderer(i, 5));
         }
@@ -295,7 +353,7 @@ public void Search(DocumentEvent e)
 
     public Supply getSelectedItem(){
         try {
-            return ListSupplies.get(getTable().getSelectedRow());
+            return getListSupplies().get(getTable().getSelectedRow());
         }
         catch (IndexOutOfBoundsException ex) {
             return null;
@@ -309,7 +367,7 @@ public void Search(DocumentEvent e)
         List<Supply> res = new ArrayList<Supply>();
         for(int i = 0; i < getTable().getSelectedRowCount(); i++)
             try {
-                res.add(ListSupplies.get(getTable().getSelectedRows()[i]));
+                res.add(getListSupplies().get(getTable().getSelectedRows()[i]));
             }
             catch (IndexOutOfBoundsException ex) {
                 //return null;
@@ -322,7 +380,7 @@ public void Search(DocumentEvent e)
 
 
     public void setSelectedItem(Supply p){
-        setSelectedIndex(ListSupplies.indexOf(p));
+        setSelectedIndex(getListSupplies().indexOf(p));
     }
 
     public int getSelectedIndex(){
@@ -335,7 +393,7 @@ public void Search(DocumentEvent e)
 
         JScrollBar Scroll = getScrollPane().getVerticalScrollBar();
         int tmp = (Scroll.getMaximum() - Scroll.getMinimum())
-                *(ListSupplies.size() - index)/ListSupplies.size();
+                *(getListSupplies().size() - index)/getListSupplies().size();
         Scroll.setValue(Scroll.getMaximum() - tmp);        
     }
 
@@ -352,6 +410,13 @@ public void Search(DocumentEvent e)
     public void setEditable(boolean Editable) {
         this.Editable = Editable;
         jPanelAddEditRemove1.setVisible(Editable);
+    }
+
+    /**
+     * @return the SupplyCollection
+     */
+    public List<Supply> getListSupplies() {
+        return data.getSupplyCollection();
     }
 
 //class MyTableCellRenderer extends javax.​swing.​table.DefaultTableCellRender implements TableCellRenderer {

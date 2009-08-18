@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -90,13 +91,12 @@ public class Customer implements Serializable {
     }
 
     public Customer(String title, String ITN, String account, String Phone, String Email, String comment, boolean isSupplier) {
-        this.title = title;
+        this(title,isSupplier);
         this.itn = ITN;
         this.account = account;
         this.phone = Phone;
         this.email = Email;
         this.commentary = comment;
-        this.isSupplier = isSupplier;
     }
 
     public Integer getId() {
@@ -276,6 +276,12 @@ public class Customer implements Serializable {
      */
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void sortSupplies() {
+        if (getSupplyCollection() != null) {
+            Collections.sort(getSupplyCollection(), new util.SupplyComparator());
+        }
     }
 
 }

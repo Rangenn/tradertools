@@ -22,7 +22,9 @@ public class DaoFactory {
     private static CategoryDao category;
     private static ProductDao product;
     private static SupplyDao supply;
+    private static SupplyChangeDao supplyChange;
     private static CustomerDao customer;
+    private static UnitDao unit;
     private static BillDao bill;
     private static InvoiceDao invoice;
     private static GenericDaoHib<InvoiceProduct, Integer> invoiceProduct;
@@ -107,10 +109,23 @@ public class DaoFactory {
             employee = new GenericDaoHib<Employee, Integer>(Employee.class);
         return employee;
     }
+
+    /**
+     * @return the supplyChange
+     */
+    public static SupplyChangeDao getSupplyChangeDao() {
+        if (supplyChange == null)
+            supplyChange = new SupplyChangeDao();
+        return supplyChange;
+    }
+
+    /**
+     * @return the unit
+     */
+    public static UnitDao getUnitDao() {
+        if (unit == null)
+            unit = new UnitDao();
+        return unit;
+    }
     
-//    public static CategoryDao getCategoryDao() {
-//        if (category == null)
-//            category = new CategoryDao();
-//        return category;
-//    }
 }

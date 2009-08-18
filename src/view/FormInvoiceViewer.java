@@ -12,6 +12,7 @@
 package view;
 
 import entity.Invoice;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -23,7 +24,8 @@ public class FormInvoiceViewer extends javax.swing.JFrame {
     public FormInvoiceViewer(Invoice i) {
         initComponents();
         jPanelInvoice1.setData(i);
-        //jPanelInvoice1.viewAllColumns();
+        jPanelInvoice1.setEditable(false);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /** This method is called from within the constructor to
@@ -38,20 +40,30 @@ public class FormInvoiceViewer extends javax.swing.JFrame {
         jPanelInvoice1 = new view.panel.JPanelInvoice();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItemQuit = new javax.swing.JMenuItem();
+        jMenuItemExport = new javax.swing.JMenuItem();
+        jMenuItemPrint = new javax.swing.JMenuItem();
+        jMenuItemClose = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jMenu1.setText("File");
 
-        jMenuItem1.setText("Export");
-        jMenu1.add(jMenuItem1);
+        jMenuItemExport.setText("Export");
+        jMenu1.add(jMenuItemExport);
 
-        jMenuItemQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemQuit.setText("Close");
-        jMenu1.add(jMenuItemQuit);
+        jMenuItemPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemPrint.setText("Print");
+        jMenu1.add(jMenuItemPrint);
+
+        jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemClose.setText("Close");
+        jMenuItemClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCloseActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItemClose);
 
         jMenuBar1.add(jMenu1);
 
@@ -80,14 +92,28 @@ public class FormInvoiceViewer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jMenuItemCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCloseActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jMenuItemCloseActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItemQuit;
+    private javax.swing.JMenuItem jMenuItemClose;
+    private javax.swing.JMenuItem jMenuItemExport;
+    private javax.swing.JMenuItem jMenuItemPrint;
     private view.panel.JPanelInvoice jPanelInvoice1;
     // End of variables declaration//GEN-END:variables
 
+    public void addJMenuItemExportActionListener(ActionListener l)
+    {
+        jMenuItemExport.addActionListener(l);
+    }
+
+    public void addJMenuItemPrintActionListener(ActionListener l)
+    {
+        jMenuItemPrint.addActionListener(l);
+    }
 }

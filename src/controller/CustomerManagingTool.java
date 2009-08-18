@@ -10,12 +10,20 @@ import controller.creator.InvoiceCreator;
 import controller.creator.CustomerCreator;
 import dao.DaoFactory;
 import entity.Customer;
+import entity.Invoice;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.util.HashMap;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import net.sf.jasperreports.engine.JRException;
+import org.apache.log4j.Logger;
 import org.hibernate.exception.JDBCConnectionException;
+import util.HibUtil;
+import util.ReportUtil;
+import view.FormBillViewer;
 import view.FormCustomerManager;
 import view.FormInvoiceViewer;
 
@@ -94,7 +102,30 @@ public class CustomerManagingTool {
         l = new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                FormInvoiceViewer FIV = new FormInvoiceViewer(FCustomers.getSelectedInvoice());
+                final Invoice i = FCustomers.getSelectedInvoice();
+                final FormInvoiceViewer FIV = new FormInvoiceViewer(i);
+                FIV.addJMenuItemExportActionListener(new ActionListener() {
+
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            HashMap params = new HashMap();
+                            params.put("invoice_id", i.getId());
+                            String reportName = "Счет № " + i.getId() + " от " +
+                                        DateFormat.getDateInstance(DateFormat.DATE_FIELD)
+                                            .format(i.getCreationDate()) + ".pdf";
+                            ReportUtil.makeReport("src/reports/InvoiceReport.jrxml",
+                                    params,
+                                    HibUtil.getSession().connection(),
+                                    reportName
+                                    );
+                            JOptionPane.showMessageDialog(FIV, "Exported to \"" + reportName + '"', "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                        } catch (JRException ex) {
+                            Logger.getLogger(this.getClass()).error(ex);
+                            JOptionPane.showMessageDialog(FIV, "Export failed.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                });
                 FIV.setVisible(true);
             }
         };
@@ -103,11 +134,24 @@ public class CustomerManagingTool {
         l = new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                CustomerCreator c = new CustomerCreator(mode);
+                FormBillViewer FBV = new FormBillViewer(FCustomers.getSelectedBill());
+                FBV.setVisible(true);
+            }
+        };
+        FCustomers.addDoubleClickOnjListBillsListener(l); //просмотр платежа
+
+        l = new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                final CustomerCreator c = new CustomerCreator(mode);
                 c.getForm().getJPanelOkCancel().addOkActionListener(new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
-                        FCustomers.updateDisplay();//не катит, надо обновлять listcustomers
+                        //TODO: fix jListCustomers update!
+                        ListCustomers.add(c.getData());
+                        c.getForm().dispose();
+                        //FCustomers.setListCustomers(ListCustomers);
+                        FCustomers.updateDisplay();
                     }
                 });
             }
@@ -127,13 +171,15 @@ public class CustomerManagingTool {
             }
         };
         FCustomers.getJPanelAddEditRemove().addjButtonRemoveActionListener(l); //удалить customer
-
+        
+        FCustomers.updateDisplay();
         FCustomers.setVisible(true);
     }
     
     public static void main(String[] args) {
         try {
            new CustomerManagingTool(MODE_CLIENTS);
+//           new CustomerManagingTool(MODE_SUPPLIERS);
         } catch (JDBCConnectionException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }

@@ -17,18 +17,17 @@ import entity.Bill;
 import entity.Customer;
 import entity.Invoice;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -71,41 +70,12 @@ public class FormCustomerManager extends javax.swing.JFrame {
             default: { showSuppliers = false; }
         }
         //jButtonNewRequest.setEnabled(showSuppliers);
-        jListCustomers.setModel(new GenericListModel(list));
+
+        jListCustomers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        ListSelectionListener sl = new ListCustomersSelectionListener(mode);
+        jListCustomers.addListSelectionListener(sl); //обработчик выбора customer
         
-        ListSelectionListener sl = new ListSelectionListener() {
-
-            public void valueChanged(ListSelectionEvent e) {
-                Customer buf = (Customer) jListCustomers.getSelectedValue();
-                jPanelCustomerFullInfo1.setData(buf);
-                BigDecimal Balance = new BigDecimal(0.00);
-                List<Invoice> invoices = null;
-                List<Bill> bills = null;
-                if (mode == CustomerManagingTool.MODE_SUPPLIERS) {
-                    invoices = DaoFactory.getInvoiceDao().getList(buf, MySelf); //мы получили от поставщика
-                    bills = DaoFactory.getBillDao().getList(buf, MySelf);//мы заплатили поставщикам                    
-                } else {
-                    invoices = DaoFactory.getInvoiceDao().getList(MySelf, buf); //мы продали клиентам
-                    bills = DaoFactory.getBillDao().getList(MySelf, buf); //мы получили оплату от клиентов
-                }
-                jListInvoices.setModel(new GenericListModel(invoices));
-                jListBills.setModel(new GenericListModel(bills));
-                for(Invoice o : invoices) {
-                    Balance = Balance.subtract(o.getInvoiceSum());
-                }
-                for(Bill o : bills) {
-                    Balance = Balance.add(o.getBillSum());
-                }
-                jLabelBalance.setText("Итоговый баланс: " + Balance.toString());
-                if (Balance.longValue() < 0) 
-                    jLabelBalance.setForeground(Color.RED);
-                else jLabelBalance.setForeground(Color.BLACK);
-                //if (!showSuppliers) Balance.multiply(new BigDecimal(-1));
-            }
-        };
-        jListCustomers.addListSelectionListener(sl);
-
-        if (!list.isEmpty()) jListCustomers.setSelectedIndex(0);        
+        jListCustomers.setModel(new GenericListModel(list));       
     }
 
     /** This method is called from within the constructor to
@@ -378,7 +348,17 @@ public class FormCustomerManager extends javax.swing.JFrame {
     {
         jListInvoices.addMouseListener(ConvertUtil.convert(l));
     }
-    // </editor-fold> 
+
+    public void addDoubleClickOnjListBillsListener(ActionListener l)
+    {
+        jListBills.addMouseListener(ConvertUtil.convert(l));
+    }
+
+    public void addListCustomersSelectionListener(ListSelectionListener sl) {
+        jListCustomers.addListSelectionListener(sl);
+    }
+    // </editor-fold>
+
     private void loadTextProps() {
         setTitle(PropsUtil.getProperty("FormCustomerManager.title"));
         jMenuFile.setText(PropsUtil.getProperty("jMenuFile.text"));
@@ -391,7 +371,7 @@ public class FormCustomerManager extends javax.swing.JFrame {
         try {
             this.setIconImage(ImageIO.read(new File(PropsUtil.getProperty("icon.hammer"))));
         } catch (IOException ex) {
-            Logger.getLogger(FormSupplyList.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormSupplyList.class.getName()).log(Level.ERROR, null, ex);
         }
         jMenuItemAdd.setIcon(new ImageIcon(
                 getClass().getResource(PropsUtil.getProperty("icon.add"))));
@@ -417,9 +397,11 @@ public class FormCustomerManager extends javax.swing.JFrame {
 
     public void updateDisplay() {
         //TODO: не обновляется jListCustomers, т.к. не обновляется его model
+        
         if (jListCustomers.getSelectedIndex() < 0)
-            jListCustomers.setSelectedIndex(jListCustomers.getFirstVisibleIndex());//?!
+           jListCustomers.setSelectedIndex(jListCustomers.getFirstVisibleIndex());//?!
         jListCustomers.updateUI();
+        //new ListCustomersSelectionListener(mode).valueChanged(null);//?!
         jListBills.updateUI();
         jListInvoices.updateUI();
         jListRequests.updateUI();
@@ -427,6 +409,67 @@ public class FormCustomerManager extends javax.swing.JFrame {
 
     public JPanelAddEditRemove getJPanelAddEditRemove() {
         return jPanelAddEditRemove1;
+    }
+
+    public void setListCustomers(List<Customer> list) {
+        jListCustomers.setSelectedIndex(-1);
+        jListCustomers.setModel(new GenericListModel(list));
+        updateDisplay();
+    }
+    /**
+     * обработчик выбора customer из списка
+     */
+    private class ListCustomersSelectionListener implements ListSelectionListener {
+
+        private final int mode;
+
+        public ListCustomersSelectionListener(int mode) {
+            this.mode = mode;
+        }
+
+        public void valueChanged(ListSelectionEvent e) {
+            if (e != null && e.getValueIsAdjusting()) return;
+            Customer buf = null;
+            BigDecimal Balance = new BigDecimal(0.00);
+            List<Invoice> invoices = null;//new ArrayList<Invoice>();
+            List<Bill> bills = null;//new ArrayList<Bill>();
+
+            try {
+                buf = (Customer) jListCustomers.getSelectedValue();
+            }
+            catch (IndexOutOfBoundsException ex) {
+                System.out.println(ex.toString());
+                return;
+            }
+
+            if (buf != null) {
+                if (mode == CustomerManagingTool.MODE_SUPPLIERS) {
+                    invoices = DaoFactory.getInvoiceDao().getList(buf, MySelf); //мы получили от поставщика
+                    bills = DaoFactory.getBillDao().getList(buf, MySelf); //мы заплатили поставщикам
+                } else {
+                    invoices = DaoFactory.getInvoiceDao().getList(MySelf, buf); //мы продали клиентам
+                    bills = DaoFactory.getBillDao().getList(MySelf, buf); //мы получили оплату от клиентов
+                }
+
+                for (Invoice o : invoices) {
+                    Balance = Balance.subtract(o.getInvoiceSum());
+                }
+                for (Bill o : bills) {
+                    Balance = Balance.add(o.getBillSum());
+                }
+            }
+
+            jPanelCustomerFullInfo1.setData(buf);
+            jListInvoices.setModel(new GenericListModel(invoices));
+            jListBills.setModel(new GenericListModel(bills));
+            jLabelBalance.setText("Итоговый баланс: " + Balance.toString() + " р.");
+            if (Balance.longValue() < 0) {
+                jLabelBalance.setForeground(Color.RED);
+            } else {
+                jLabelBalance.setForeground(Color.BLACK);
+                //if (!showSuppliers) Balance.multiply(new BigDecimal(-1));
+            }
+        }
     }
 
 }

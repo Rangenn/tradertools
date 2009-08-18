@@ -11,8 +11,8 @@ import entity.Supply;
 import entity.SupplyPK;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.hibernate.Transaction;
 import util.HibUtil;
 import util.PropsUtil;
@@ -23,8 +23,8 @@ import util.PropsUtil;
  */
 public class SupplyDao extends GenericDaoHib<Supply, SupplyPK> {
 
-    //private static ProductDao  productDao = DaoFactory.getProductDao();
-    //private static CustomerDao custDao = DaoFactory.getCustomerDao();
+    public static final int DEFAULT_ORDER_AMOUNT = 1;
+    public static final int DEFAULT_AMOUNT_MIN = 0;
 
     SupplyDao(){
         super(Supply.class);
@@ -39,20 +39,30 @@ public class SupplyDao extends GenericDaoHib<Supply, SupplyPK> {
         return res;
      }
 
-    public Supply create(SupplyPK pk, BigDecimal actual_price) throws DaoException {
+    public Supply create(SupplyPK pk, BigDecimal actual_price, int amount_left) throws DaoException {
         if (pk == null || actual_price == null) return null;
         Supply res = (Supply) this.read(pk);
         if (res != null)
              throw new DaoException(PropsUtil.getProperty("DaoException.ObjectExists"));
-        res = new Supply(pk, 0, actual_price);
+        res = new Supply(pk, 0, actual_price, amount_left);
 //        res.setPrice(actual_price);
 //        res.setTitleAlias(title_alias);
 //        res.setAmountLeft(amount_left);
         res.setProduct((Product) DaoFactory.getProductDao().read(pk.getProductId()));
         res.setCustomer((Customer) DaoFactory.getCustomerDao().read(pk.getSellerId()));
 //        res.setPrevPrice(prev_price);
+        res.setDefaultOrderAmount(1);
         this.create(res);
         return res;
+    }
+
+    @Override
+    public SupplyPK create(Supply s) {
+        if (s.getDefaultOrderAmount() == null)
+            s.setDefaultOrderAmount(DEFAULT_ORDER_AMOUNT);
+        if (s.getAmountMin() == null)
+            s.setAmountMin(DEFAULT_AMOUNT_MIN);
+        return super.create(s);
     }
 
 //    public Supply create(String customertitle, String title,
@@ -88,7 +98,7 @@ public class SupplyDao extends GenericDaoHib<Supply, SupplyPK> {
                 pr = DaoFactory.getProductDao().create(producttitle);
         }
         catch (DaoException ex){
-            Logger.getLogger(SupplyDao.class.getName()).log(Level.WARNING, ex.getMessage());
+            Logger.getLogger(SupplyDao.class.getName()).log(Level.WARN, ex.getMessage());
             pr = DaoFactory.getProductDao().get(producttitle);
         }
         return new SupplyPK(pr.getId(), cust.getId());
@@ -103,16 +113,9 @@ public class SupplyDao extends GenericDaoHib<Supply, SupplyPK> {
         this.update(s);
     }
 
-//    public void update(Supply s, String title, String article, Category category, String title_alias, int amount_min, int amount_left,
-//             BigDecimal prev_price, BigDecimal actual_price){
-//        s.getProduct().setTitle(title);
-//        s.getProduct().setArticle(article);
-//        s.getProduct().setCategory(category);
-//
-//        this.update(s, title_alias, amount_min, amount_left, prev_price, actual_price);
-//    }
-//
-//    public void update(Supply s, String title, String article, int amountleft, BigDecimal actualprice, Category category) {
-//        this.update(s, null, s.getAmountMin(), amountleft, s.getPrevPrice(), actualprice);
+//    public BigDecimal getPrice(SupplyPK id) {
+//        Query q = HibUtil.getSession().getNamedQuery("Invoice.findBySellerIdBuyerId");
+//        q.setParameter("Id", id);
+//        return (BigDecimal) q.uniqueResult();
 //    }
 }
